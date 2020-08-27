@@ -46,10 +46,10 @@ def test_desc():
 
 
 def test_movie_equality():
-    a = Movie("help me!!!!", 2050)
-    b = Movie("help me!!!!", 2050)
-    c = Movie("help me!!!!", 2051)
-    d = Movie("help me!!!", 2050)
+    a = Movie("Star Wars 10", 2050)
+    b = Movie("Star Wars 10", 2050)
+    c = Movie("Star Wars 10", 2051)
+    d = Movie("Star Wars 11", 2050)
     b.runtime_minutes = 1000
     a.runtime_minutes = 2000
     # must only compare name and release year
@@ -59,10 +59,10 @@ def test_movie_equality():
 
 
 def test_movie_hash():
-    a = Movie("help me!!!!", 2050)
-    b = Movie("help me!!!!", 2050)
-    c = Movie("help me!!!!", 2051)
-    d = Movie("help me!!!", 2050)
+    a = Movie("Star Wars 10", 2050)
+    b = Movie("Star Wars 10", 2050)
+    c = Movie("Star Wars 10", 2051)
+    d = Movie("Star Wars 11", 2050)
     b.runtime_minutes = 1000
     a.runtime_minutes = 2000
     # must only compare name and release year
@@ -110,30 +110,35 @@ def test_runtime_minutes():
 def test_actors():
     aa = Movie("Emu Wars", 2000)
 
-    aa.add_actor(Actor("Rick Astley"))
-    aa.add_actor(Actor("huawei phone"))
-    aa.add_actor(Actor("huawei phone"))
+    actor1 = Actor("Rick Astley")
+    actor2 = Actor("Voldemort")
+    actor3 = Actor("Winnie the Pooh")
+    aa.add_actor(actor1)
+    aa.add_actor(actor2)
+    aa.add_actor(actor2)
 
-    assert aa.actors == [Actor("Rick Astley"), Actor("huawei phone")]
+    assert aa.actors == [actor1, actor2]
 
-    aa.remove_actor(Actor("Rick Astley"))
-    aa.remove_actor(Actor("he who must not be named"))
-    assert aa.actors == [Actor("huawei phone")]
+    aa.remove_actor(actor1)
+    aa.remove_actor(actor3)
+    assert aa.actors == [actor2]
 
 
 def test_genre():
     aa = Movie("help", 2000)
 
-    aa.add_genre(Genre("eggs"))
-    aa.add_genre(Genre("eggs"))
-    aa.add_genre(Genre("tomato horror"))
-    aa.add_genre(Genre("eggs"))
+    genre1 = Genre("scifi")
+    genre2 = Genre("animation")
+    aa.add_genre(genre1)
+    aa.add_genre(genre1)
+    aa.add_genre(genre2)
+    aa.add_genre(genre1)
 
-    assert aa.genres == [Genre("eggs"), Genre("tomato horror")]
+    assert aa.genres == [genre1, genre2]
 
-    aa.remove_genre(Genre("eggs"))
-    aa.remove_genre(Genre("he who must not be named"))
-    assert aa.genres == [Genre("tomato horror")]
-    aa.remove_genre(Genre("tomato horror"))
+    aa.remove_genre(genre1)
+    aa.remove_genre(Genre("drama"))
+    assert aa.genres == [genre2]
+    aa.remove_genre(genre2)
 
     assert aa.genres == []
