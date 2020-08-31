@@ -31,8 +31,14 @@ class User:
         return hash(self._user_name)
 
     def watch_movie(self, movie: Movie):
-        self.watched_movies.append(movie)
-        self.time_spent_watching_movies_minutes += movie.runtime_minutes
+        if movie not in self.watched_movies:
+            self.watched_movies.append(movie)
+            self.time_spent_watching_movies_minutes += movie.runtime_minutes
 
     def add_review(self, review: Review):
-        self.reviews.append(review)
+        same_movie_reviews = list(filter(lambda x: self.reviews[x].movie == review.movie, range(len(self.reviews))))
+        if len(same_movie_reviews) == 0:
+            self.reviews.append(review)
+        else:
+            # replace
+            self.reviews[same_movie_reviews[0]] = review

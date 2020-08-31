@@ -1,6 +1,7 @@
 from typing import Optional
 
 from domainmodel.movie import Movie
+from domainmodel.user import User
 
 
 class WatchList:
@@ -25,6 +26,13 @@ class WatchList:
 
     def first_movie_in_watchlist(self) -> Optional[Movie]:
         return self.select_movie_to_watch(0)
+
+    def watch_movie(self, user: User, index: int):
+        """ Lets a user watch a movie from the watchlist, then removes the movie from the watchlist. """
+        if 0 <= index < len(self.movies):
+            movie = self.movies[index]
+            user.watch_movie(movie)
+            del self.movies[index]
 
     def __iter__(self):
         self.index = 0

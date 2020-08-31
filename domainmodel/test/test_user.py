@@ -22,6 +22,13 @@ def test_add_movie():
     assert user1.time_spent_watching_movies_minutes == 12
     assert user1.watched_movies == [movie, movie2]
 
+def test_duplicate_movie():
+    movie = Movie("The Bee Movie but its 20000x faster", 2010)
+    user1 = User('me', 'pwd')
+    user1.watch_movie(movie)
+    assert user1.watched_movies == [movie]
+    user1.watch_movie(movie)
+    assert user1.watched_movies == [movie]
 
 def test_user_equality():
     user1 = User('Chewbacca', 'pp')
@@ -38,3 +45,19 @@ def test_add_review():
     review = Review(movie2, "My car turned into the Millennium Falcon after showing the movie to it", 10)
     user1.add_review(review)
     assert user1.reviews == [review]
+
+
+def test_duplicate_review():
+    user1 = User('mmm', 'pwd')
+    movie2 = Movie("Star Wars", 1977)
+    movie1 = Movie("Death of Stalin", 1977)
+    review2 = Review(movie2, "My car turned into the Millennium Falcon after showing the movie to it", 10)
+
+    review = Review(movie1, "Good movie, but -3 points for being produced in evil capitalist countries", 7)
+    user1.add_review(review)
+    assert user1.reviews == [review]
+    user1.add_review(review2)
+    assert user1.reviews == [review, review2]
+    user1.add_review(review)
+    assert user1.reviews == [review, review2]
+

@@ -1,8 +1,11 @@
 from domainmodel.movie import Movie
+from domainmodel.user import User
 from domainmodel.watchlist import WatchList
 
 movie = Movie("Bee Movie but its 19999x faster", 2300)
+movie.runtime_minutes = 122
 movie2 = Movie("Shrek but everytime someone blinks it gets faster", 2300)
+movie2.runtime_minutes = 233
 movie3 = Movie("The Lego Duplo Movie", 2300)
 
 def test_add_movie():
@@ -48,3 +51,16 @@ def test_iterate():
     w.add_movie(movie2)
     w.add_movie(movie3)
     assert list(w) == [movie, movie2, movie3]
+
+def test_watch_movie():
+    w = WatchList()
+    w.add_movie(movie)
+    w.add_movie(movie2)
+    w.add_movie(movie3)
+    user = User("bob", "pwd")
+    w.watch_movie(user, 1)
+    assert list(w) == [movie, movie3]
+    assert user.time_spent_watching_movies_minutes == 233
+    w.watch_movie(user, 0)
+    assert list(w) == [movie3]
+    assert user.time_spent_watching_movies_minutes == 355
