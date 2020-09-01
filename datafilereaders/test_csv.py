@@ -18,6 +18,15 @@ def test_basic_csv():
     assert m1.description == "ise"
     assert m1.director == Director("Darth Vader")
     assert m1.actors == [Actor("Luke"), Actor("R2-D2"), Actor("Leia")]
+    assert m1.rating == 8.1
+    assert m1.votes == 757074
+    assert m1.revenue == 333.13
+    assert m1.metascore == 76
+
+    m2 = reader.dataset_of_movies[1]
+    assert m2.metascore is None
+    assert m2.revenue is None
+
 
 def test_code_runner():
     filename = pathlib.Path(__file__).parent.parent.joinpath('datafiles/Data1000Movies.csv')

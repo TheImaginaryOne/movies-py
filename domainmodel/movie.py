@@ -1,3 +1,5 @@
+from typing import Optional
+
 from domainmodel.genre import Genre
 from domainmodel.actor import Actor
 from domainmodel.director import Director
@@ -12,6 +14,50 @@ class Movie:
         self.actors: [Actor] = []
         self.genres: [Genre] = []
         self._runtime_minutes: int = 0
+        self._rating: float = 0
+        self._votes: int = 0
+        self._revenue: Optional[float] = None
+        self._metascore: Optional[float] = None
+
+    @property
+    def rating(self):
+        """imdb score"""
+        return self._rating
+
+    @rating.setter
+    def rating(self, rating):
+        if 0 <= rating <= 10:
+            self._rating = rating
+
+    @property
+    def votes(self):
+        """imdb votes"""
+        return self._votes
+
+    @votes.setter
+    def votes(self, votes):
+        if 0 <= votes:
+            self._votes = votes
+
+    @property
+    def revenue(self):
+        return self._revenue
+
+    @revenue.setter
+    def revenue(self, revenue):
+        # probably if the movie is terrible then revenue < 0
+        #if 0 <= revenue:
+        self._revenue = revenue
+
+    @property
+    def metascore(self):
+        """metacritic score"""
+        return self._metascore
+
+    @metascore.setter
+    def metascore(self, metascore):
+        if 0 <= metascore:
+            self._metascore = metascore
 
     @property
     def runtime_minutes(self):

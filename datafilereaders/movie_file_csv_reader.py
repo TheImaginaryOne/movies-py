@@ -28,6 +28,13 @@ class MovieFileCSVReader:
                 director = Director(row['Director'])
                 m.director = director
 
+                m.votes = int(row['Votes'])
+                m.rating = float(row['Rating'])
+                if row['Metascore'] != 'N/A':
+                    m.metascore = float(row['Metascore'])
+                if row['Revenue (Millions)'] != 'N/A':
+                    m.revenue = float(row['Revenue (Millions)'])
+
                 if director not in self.dataset_of_directors:
                     self.dataset_of_directors.append(director)
 

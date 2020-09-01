@@ -142,3 +142,35 @@ def test_genre():
     aa.remove_genre(genre2)
 
     assert aa.genres == []
+
+
+def test_movie_rating():
+    mm = Movie("Star Wars The Third Gathers: Backstroke of the West", 2000)
+    mm.rating = 6.3
+    assert mm.rating == 6.3
+    mm.rating = -1
+    assert mm.rating == 6.3
+    mm.rating = 11
+    assert mm.rating == 6.3
+
+
+def test_movie_revenue():
+    mm = Movie("Star Wars The Third Gathers: Backstroke of the West", 2000)
+    mm.revenue = 61.3
+    assert mm.revenue == 61.3
+
+
+def test_movie_votes():
+    mm = Movie("Star Wars The Third Gathers: Backstroke of the West", 2000)
+    mm.votes = 600
+    assert mm.votes == 600
+    mm.votes = -1
+    assert mm.votes == 600
+
+
+def test_movie_metascore():
+    mm = Movie("Star Wars The Third Gathers: Backstroke of the West", 2000)
+    mm.metascore = 43.3
+    assert mm.metascore == 43.3
+    mm.metascore = -1
+    assert mm.metascore == 43.3
