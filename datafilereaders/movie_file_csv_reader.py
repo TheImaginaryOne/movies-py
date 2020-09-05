@@ -30,6 +30,7 @@ class MovieFileCSVReader:
 
                 m.votes = int(row['Votes'])
                 m.rating = float(row['Rating'])
+                m.runtime_minutes = int(row['Runtime (Minutes)'])
                 if row['Metascore'] != 'N/A':
                     m.metascore = float(row['Metascore'])
                 if row['Revenue (Millions)'] != 'N/A':

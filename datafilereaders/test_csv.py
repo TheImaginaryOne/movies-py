@@ -22,6 +22,7 @@ def test_basic_csv():
     assert m1.votes == 757074
     assert m1.revenue == 333.13
     assert m1.metascore == 76
+    assert m1.runtime_minutes == 121
 
     m2 = reader.dataset_of_movies[1]
     assert m2.metascore is None
