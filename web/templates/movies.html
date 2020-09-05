@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <title>Movies</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    </head>
+    <body>
+        <div>
+            <h1>Movies</h1>
+        </div>
+        {% for movie in movies %}
+            <div>
+                <h2 class="movie-title">{{ movie.title }} ({{ movie.release_year }})</h2>
+            </div>
+            <div>
+                <span class="movie-data-key">Metascore: </span><span class="movie-data-field">{{ movie.metascore }}</span>
+                <span class="text-separator"></span>
+                <span class="movie-data-key">IMDB Rating: </span>
+                <span class="movie-data-field">{{ movie.rating }}</span>
+                <span>({{ movie.votes }} votes)</span>
+            </div>
+            <div>
+                <span class="movie-data-key">Runtime: </span><span> {{movie.runtime_minutes}} min </span>
+                <span class="text-separator">|</span>
+                <span class="movie-data-key">Revenue: </span><span>${{ movie.revenue }} mil</span>
+            </div>
+            <div>
+                <span class="movie-data-key">Director</span>
+                <span>{{ movie.director.director_full_name }}</span>
+                <span class="text-separator">|</span>
+                <span class="movie-data-key">Actors:</span>
+                <span>
+                {% for actor in movie.actors %}
+                {{ actor.actor_full_name + ", " }}
+                {% endfor %}
+                </span>
+            </div>
+            <div>
+                <span class="movie-data-key">Genres:</span>
+                <span>
+                {% for genre in movie.genres %}
+                {{ genre.genre_name + ", " }}
+                {% endfor %}
+                </span>
+            </div>
+
+        <div>
+                <p>
+                {{ movie.description }}
+                </p>
+            </div>
+        {% endfor %}
+    </body>
+</html>
