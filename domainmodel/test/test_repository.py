@@ -12,5 +12,5 @@ def test_view_movies():
     movies_mock = [m0, m1, m2, m3, m4, m5, m6]
     rr = MemoryRepository(movies_mock)
 
-    assert rr.view_movies(0, 3) == [m0, m1, m2]
-    assert rr.view_movies(5, 80) == [m5, m6]
+    assert rr.view_movies(0, 3) == ([m0, m1, m2], True)
+    assert rr.view_movies(5, 80) == ([m5, m6], False)

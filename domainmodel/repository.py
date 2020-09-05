@@ -14,4 +14,4 @@ class MemoryRepository(Repository):
         self.genres = m
 
     def view_movies(self, start, number):
-        return self.movies[start:start + number]
+        return self.movies[start:start + number], start + number < len(self.movies)

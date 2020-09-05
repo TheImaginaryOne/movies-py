@@ -1,0 +1,12 @@
+{% macro previous_next(previous_id, next_id) -%}
+<div class="pagination">
+    <span>
+        {% if previous_id != None %}
+        <a href="{{ url_for('movies.show', page=previous_id) }}">Previous</a>
+        {% endif %}
+        {% if next_id != None %}
+        <a href="{{ url_for('movies.show', page=next_id) }}">Next</a>
+        {% endif %}
+    </span>
+</div>
+{%- endmacro %}
