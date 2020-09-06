@@ -1,9 +1,42 @@
-@import url('https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
 body {
-    font-family: 'PT Serif', sans-serif;
+    font-family: 'Nunito', sans-serif;
     font-size: 16px;
     margin: 0;
+    color: #333;
+}
+.top-menu-container {
+    clear: both;
+}
+.top-menu {
+    padding: 0 10%;
+    display: flex;
+    background-color: #f06b43;
+}
+.top-menu-container:after {
+    display: block;
+    width: 100%;
+    height: 8px;
+    background-image: linear-gradient(to bottom, #bbbbbbff, #00000000);
+    content: "";
+}
+.top-menu-title {
+    padding: 8px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #fff;
+}
+.top-menu-item {
+    padding: 12px;
+}
+.top-menu-item a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.narrow-content {
+    clear: both;
+    padding: 0 30%;
 }
 .content {
     clear: both;
@@ -46,3 +79,37 @@ body {
     width: 200px;
 }
 
+/* login form */
+.grid-form-container {
+    display: grid;
+    grid-template-columns: fit-content(20%) 1fr;
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+}
+.grid-form-row {
+    grid-column: 1 / 3;
+}
+.form-errors {
+    background-color: #f06f5d;
+    color: #fff;
+}
+.form-errors ul {
+    margin: 8px 0;
+    padding-left: 24px;
+}
+input[type=text], input[type=password], select {
+    border: none;
+    background-color: #eee;
+    padding: 8px 12px;
+    font-family: 'Nunito', sans-serif;
+}
+input[type=submit] {
+    border: none;
+    background-color: #48b8ce;
+    color: #fff;
+    padding: 8px 12px;
+    font-family: 'Nunito', sans-serif;
+}
+.grid-form-label {
+    padding-top: 6px;
+}

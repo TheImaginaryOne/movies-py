@@ -2,6 +2,7 @@ from domainmodel.movie import Movie
 from domainmodel.director import Director
 from domainmodel.actor import Actor
 from domainmodel.genre import Genre
+from domainmodel.user import User
 
 
 class Repository:
@@ -10,12 +11,19 @@ class Repository:
         self.actors = None
         self.directors = None
         self.genres = None
+        self.users = None
 
     def view_movies(self, start, number, director: str = "", actors=None, genres=None):
         if genres is None:
             genres = []
         if actors is None:
             actors = []
+
+    def add_user(self, username, password):
+        pass
+
+    def login(self, username, password):
+        pass
 
 
 def filter_results(director, actors, genres):
@@ -33,6 +41,7 @@ class MemoryRepository(Repository):
         self.actors = a
         self.directors = d
         self.genres = g
+        self.users = []
 
     def view_movies(self, start, number, director="", actors=None, genres=None):
         # JANKY TODO
@@ -42,3 +51,19 @@ class MemoryRepository(Repository):
             actors = []
         results = list(filter(filter_results(director, actors, genres), self.movies))
         return results[start:start + number], start + number < len(results)
+
+    def add_user(self, username, password):
+        uu = User(username, password)
+        if uu not in self.users:
+            self.users.append(uu)
+            return True  # success
+        else:
+            return False  # failure - user exists!
+
+    def login(self, username, password):
+        users = list(filter(lambda u: u.user_name == username, self.users))
+
+        if len(users) == 0:
+            return False
+
+        return users[0].password == password

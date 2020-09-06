@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% import "pagination.html" as pagination %}
+{% block content %}
+<div class="narrow-content">
+    <h1>Register</h1>
+</div>
+<div class="narrow-content">
+    <form method="post" action="{{ url_for('user.register') }}" class="grid-form-container">
+        {% if errors|length > 0 %}
+        <div class="form-errors grid-form-row">
+            <ul>
+            {% for e in errors %}
+            <li>{{ e }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        {{ form.csrf_token }}
+        {{ form.username.label(class_ = "grid-form-label") }}
+        {{ form.username }}
+        {{ form.password.label(class_ = "grid-form-label") }}
+        {{ form.password }}
+        <input value="Register" type="submit">
+    </form>
+</div>
+{% endblock %}

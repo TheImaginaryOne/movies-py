@@ -1,8 +1,9 @@
-from datafilereaders.movie_file_csv_reader import MovieFileCSVReader
-from domainmodel.user import User, Review, Movie
-from domainmodel.repository import MemoryRepository
 from flask import Flask
-from web.movies import movies_blueprint
+
+from datafilereaders.movie_file_csv_reader import MovieFileCSVReader
+from domainmodel.repository import MemoryRepository
+from web import movies, user
+
 app = Flask(__name__)
 app.secret_key = "TODO"
 
@@ -14,6 +15,7 @@ def main():
                                   movie_file_reader.dataset_of_actors,
                                   movie_file_reader.dataset_of_directors,
                                   movie_file_reader.dataset_of_genres)
-    app.register_blueprint(movies_blueprint(repository))
+    app.register_blueprint(movies.movies_blueprint(repository))
+    app.register_blueprint(user.blueprint(repository))
 
 main()

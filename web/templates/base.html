@@ -5,6 +5,19 @@
 </head>
 <body>
 <div>
+    <div class="top-menu-container">
+    <div class="top-menu">
+        <div class="top-menu-title">
+            Fresh Oranges
+        </div>
+        <div class="top-menu-item">
+            <a href="{{ url_for('movies.show') }}">Search Movies</a>
+        </div>
+        <div class="top-menu-item">
+            <a href="{{ url_for('user.login') }}">Log in</a>
+        </div>
+    </div>
+    </div>
     {% block content %}{% endblock %}
 </div>
 </body>

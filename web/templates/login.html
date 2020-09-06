@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% import "pagination.html" as pagination %}
+{% block content %}
+<div class="narrow-content">
+    <h1>Log in</h1>
+</div>
+<div class="narrow-content">
+    <form method="post" action="{{ url_for('user.login') }}" class="grid-form-container">
+        {{ form.csrf_token }}
+        {{ form.username.label(class_ = "grid-form-label") }}
+        {{ form.username }}
+        {{ form.password.label(class_ = "grid-form-label") }}
+        {{ form.password }}
+        <div class="grid-form-row">
+            <input value="Log in" type="submit">
+        </div>
+        <div class="grid-form-row">No account? <a href="{{ url_for('user.register') }}">Register an account</a></div>
+    </form>
+</div>
+{% endblock %}

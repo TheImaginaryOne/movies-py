@@ -55,3 +55,24 @@ def test_view_movies_filter_actor():
 
 def test_view_movies_filter_genre():
     assert rr.view_movies(0, 3, "", [a1.actor_full_name], [g1.genre_name]) == ([m1, m4], False)
+
+
+def test_add_user():
+    repo = MemoryRepository(movies_mock, [], [], [])
+
+    assert repo.add_user("bob", "pass123")
+    assert not repo.add_user("bob", "pass12")  # duplicate user
+    assert repo.add_user("bobb", "pass123")
+
+
+def test_user_login():
+    repo = MemoryRepository(movies_mock, [], [], [])
+
+    assert repo.add_user("bob", "pass123")
+    assert repo.add_user("bobb", "pass12")
+
+    assert repo.login("bob", "pass123")
+    assert not repo.login("bobb", "pass123")
+    assert repo.login("bobb", "pass12")
+    assert not repo.login("shrek", "pass123")
+    assert not repo.login("bob", "pass12344")
