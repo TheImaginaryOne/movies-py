@@ -4,9 +4,29 @@
 <div>
     <h1>Movies</h1>
 </div>
-{{ pagination.previous_next(previous_id, next_id) }}
-{% for movie in movies %}
 <div>
+    <form method="get" action="{{ url_for('movies.show') }}">
+
+        <div class="search-form-item">
+        {{ form.director.label(class_="search-form-label") }}
+        {{ form.director(class_="movie-search-text") }}
+        </div>
+        <div class="search-form-item">
+        {{ form.actors.label(class_="search-form-label") }}
+        {{ form.actors(class_="movie-search-select") }}
+        </div>
+        <div class="search-form-item">
+        {{ form.genres.label(class_="search-form-label") }}
+        {{ form.genres(class_="movie-search-select") }}
+        </div>
+        <input type="submit" value="Search">
+    </form>
+</div>
+<div class="content">
+{{ pagination.previous_next(previous_id, next_id, url_query) }}
+</div>
+{% for movie in movies %}
+<div class="content">
     <div>
         <h2 class="movie-title">{{ movie.title }} ({{ movie.release_year }})</h2>
     </div>
@@ -49,5 +69,5 @@
     </div>
 </div>
 {% endfor %}
-{{ pagination.previous_next(previous_id, next_id) }}
+{{ pagination.previous_next(previous_id, next_id, url_query) }}
 {% endblock %}

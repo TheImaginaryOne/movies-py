@@ -4,6 +4,9 @@ body {
     font-family: 'PT Serif', sans-serif;
     font-size: 16px;
 }
+.content {
+    clear: both;
+}
 .movie-title {
     font-size: 30px;
     margin: 4px 0;
@@ -14,6 +17,20 @@ body {
 .movie-data-key {
     font-weight: bold;
 }
-.text-separator {
-    padding: 0 4px;
+.movie-search-select {
+    width: 200px;
+    height: 160px;
+}
+.movie-search-text {
+    width: 200px;
+}
+.search-form-item {
+    float: left;
+    padding-right: 16px;
+}
+.search-form-label {
+    padding-right: 8px;
+    padding-top: 4px;
+    font-size: 20px;
+    vertical-align: top;
 }
