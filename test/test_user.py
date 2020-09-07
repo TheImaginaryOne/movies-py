@@ -1,13 +1,6 @@
-import pytest
 from flask import session
 
-from cs235init import create_app
-
-
-@pytest.fixture
-def client():
-    return create_app({'TESTING': True, 'WTF_CSRF_ENABLED': False}).test_client()
-
+from test.test_common import client
 
 def url(x):
     return f"http://localhost{x}"

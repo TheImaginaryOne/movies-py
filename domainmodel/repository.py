@@ -46,8 +46,10 @@ class MemoryRepository(Repository):
         self.genres = g
         self.users = []
 
-    def view_movies(self, start, number, director="", actors=None, genres=None):
+    def view_movies(self, start, number, director=None, actors=None, genres=None):
         # JANKY TODO
+        if director is None:
+            director = ""
         if genres is None:
             genres = []
         if actors is None:
