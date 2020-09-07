@@ -61,9 +61,12 @@ body {
     vertical-align: top;
 }
 /* on movie page*/
-.movie-title {
-    font-size: 30px;
-    margin: 4px 0;
+.movie-preview-item {
+    margin-bottom: 16px;
+}
+.movie-preview-title {
+    font-size: 24;
+    margin: 0;
 }
 .movie-data-field {
     font-size: 24px;

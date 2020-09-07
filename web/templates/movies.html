@@ -33,44 +33,18 @@
 {% for movie in movies %}
     <div class="movie-preview-item">
         <div>
-            <h2 class="movie-title">{{ movie.title }} ({{ movie.release_year }})</h2>
-        </div>
-        <div>
-            <span class="movie-data-key">Metascore: </span><span class="movie-data-field">{{ movie.metascore }}</span>
-            <span class="text-separator"></span>
-            <span class="movie-data-key">IMDB Rating: </span>
-            <span class="movie-data-field">{{ movie.rating }}</span>
-            <span>({{ movie.votes }} votes)</span>
-        </div>
-        <div>
-            <span class="movie-data-key">Runtime: </span><span> {{movie.runtime_minutes}} min </span>
-            <span class="text-separator">|</span>
-            <span class="movie-data-key">Revenue: </span><span>${{ movie.revenue }} mil</span>
+            <h2 class="movie-preview-title">{{ movie.title | e }} ({{ movie.release_year | e }})</h2>
         </div>
         <div>
             <span class="movie-data-key">Director</span>
-            <span>{{ movie.director.director_full_name }}</span>
+            <span>{{ movie.director.director_full_name | e }}</span>
             <span class="text-separator">|</span>
             <span class="movie-data-key">Actors:</span>
             <span>
             {% for actor in movie.actors %}
-            {{ actor.actor_full_name + ", " }}
+            {{ actor.actor_full_name | e + ", " }}
             {% endfor %}
             </span>
-        </div>
-        <div>
-            <span class="movie-data-key">Genres:</span>
-            <span>
-            {% for genre in movie.genres %}
-            {{ genre.genre_name + ", " }}
-            {% endfor %}
-            </span>
-        </div>
-
-        <div>
-        <p>
-            {{ movie.description }}
-        </p>
         </div>
     </div>
 {% endfor %}
