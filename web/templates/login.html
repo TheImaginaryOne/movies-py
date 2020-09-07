@@ -6,6 +6,11 @@
 </div>
 <div class="narrow-content">
     <form method="post" action="{{ url_for('user.login') }}" class="grid-form-container">
+        {% if error != None %}
+        <div class="form-errors grid-form-row">
+            {{ error }}
+        </div>
+        {% endif %}
         {{ form.csrf_token }}
         {{ form.username.label(class_ = "grid-form-label") }}
         {{ form.username }}

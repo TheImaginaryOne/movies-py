@@ -25,6 +25,9 @@ class Repository:
     def login(self, username, password):
         pass
 
+    def get_user(self, index):
+        pass
+
 
 def filter_results(director, actors, genres):
     def x(m: Movie):
@@ -60,10 +63,17 @@ class MemoryRepository(Repository):
         else:
             return False  # failure - user exists!
 
+    def get_user(self, index):
+        if index < len(self.users):
+            return self.users[index]
+        return None
+
     def login(self, username, password):
-        users = list(filter(lambda u: u.user_name == username, self.users))
+        users = list(filter(lambda u: u[1].user_name == username, enumerate(self.users)))
 
         if len(users) == 0:
-            return False
+            return None
 
-        return users[0].password == password
+        if users[0][1].password == password:
+            return users[0][0]  # return id of user
+        return None

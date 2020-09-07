@@ -4,10 +4,14 @@ from datafilereaders.movie_file_csv_reader import MovieFileCSVReader
 from domainmodel.repository import MemoryRepository
 from web import movies, user
 
-app = Flask(__name__)
-app.secret_key = "TODO"
 
-def main():
+def create_app(test_config=None):
+    app = Flask(__name__)
+    app.secret_key = "TODO"
+
+    if test_config is not None:
+        app.config.from_mapping(test_config)
+
     filename = 'datafiles/Data1000Movies.csv'
     movie_file_reader = MovieFileCSVReader(filename)
     movie_file_reader.read_csv_file()
@@ -17,5 +21,8 @@ def main():
                                   movie_file_reader.dataset_of_genres)
     app.register_blueprint(movies.movies_blueprint(repository))
     app.register_blueprint(user.blueprint(repository))
+    user.inject_current_user(app, repository)
+    return app
 
-main()
+
+app = create_app()

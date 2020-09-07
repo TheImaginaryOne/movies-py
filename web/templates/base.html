@@ -13,9 +13,18 @@
         <div class="top-menu-item">
             <a href="{{ url_for('movies.show') }}">Search Movies</a>
         </div>
+        {% if current_user is none %}
         <div class="top-menu-item">
             <a href="{{ url_for('user.login') }}">Log in</a>
         </div>
+        {% else %}
+        <div class="top-menu-item">
+            Hello, {{ current_user.user_name }}
+        </div>
+        <div class="top-menu-item">
+            <a href="{{ url_for('user.logout') }}">Log out</a>
+        </div>
+        {% endif %}
     </div>
     </div>
     {% block content %}{% endblock %}

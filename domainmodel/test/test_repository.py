@@ -3,6 +3,7 @@ from domainmodel.movie import Movie
 from domainmodel.director import Director
 from domainmodel.actor import Actor
 from domainmodel.genre import Genre
+from domainmodel.user import User
 
 d1 = Director("DJ Khaled")
 d2 = Director("Angry Shrek")
@@ -71,8 +72,17 @@ def test_user_login():
     assert repo.add_user("bob", "pass123")
     assert repo.add_user("bobb", "pass12")
 
-    assert repo.login("bob", "pass123")
-    assert not repo.login("bobb", "pass123")
-    assert repo.login("bobb", "pass12")
-    assert not repo.login("shrek", "pass123")
-    assert not repo.login("bob", "pass12344")
+    assert repo.login("bob", "pass123") == 0
+    assert repo.login("bobb", "pass123") is None
+    assert repo.login("bobb", "pass12") == 1
+    assert repo.login("shrek", "pass123") is None
+    assert repo.login("bob", "pass12344") is None
+
+def test_user_index():
+    repo = MemoryRepository(movies_mock, [], [], [])
+
+    assert repo.add_user("a", "c")
+    assert repo.add_user("b", "d")
+    assert repo.get_user(0) == User("a", "c")
+    assert repo.get_user(1) == User("b", "d")
+    assert repo.get_user(2) is None
