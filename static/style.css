@@ -68,9 +68,6 @@ body {
     font-size: 24;
     margin: 0;
 }
-.movie-data-field {
-    font-size: 24px;
-}
 .movie-data-key {
     font-weight: bold;
 }
@@ -80,6 +77,30 @@ body {
 }
 .movie-search-text {
     width: 200px;
+}
+/* movie details */
+.movie-details {
+    display: grid;
+    grid-template-columns: fit-content(20%) 1fr;
+    grid-column-gap: 8px;
+    grid-row-gap: 4px;
+    //padding-bottom: 24px;
+}
+.movie-details-hr {
+    border: 1px solid #aaa;
+}
+.movie-ratings {
+    display: grid;
+    grid-template-columns: fit-content(20%) fit-content(20%);
+    grid-column-gap: 16px;
+    grid-row-gap: 4px;
+}
+.movie-rating {
+    font-size: 24px;
+}
+.movie-rating-extra {
+    font-size: 16px;
+    color: #888;
 }
 
 /* login form */
@@ -101,7 +122,7 @@ body {
     margin: 0;
     padding-left: 16px;
 }
-input[type=text], input[type=password], select {
+input[type=text], input[type=password], select, textarea {
     border: none;
     background-color: #eee;
     padding: 8px 12px;

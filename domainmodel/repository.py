@@ -28,6 +28,9 @@ class Repository:
     def get_user(self, index):
         pass
 
+    def get_movie(self, index):
+        pass
+
 
 def filter_results(director, actors, genres):
     def x(m: Movie):
@@ -68,6 +71,11 @@ class MemoryRepository(Repository):
     def get_user(self, index):
         if index < len(self.users):
             return self.users[index]
+        return None
+
+    def get_movie(self, index):
+        if index < len(self.movies):
+            return self.movies[index]
         return None
 
     def login(self, username, password):

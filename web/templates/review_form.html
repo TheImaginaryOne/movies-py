@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% import "pagination.html" as pagination %}
+{% block content %}
+<div class="narrow-content">
+    <h1>Add review</h1>
+    <h2>Reviewing <a href="{{ url_for('movies.single_movie', index=movie_index) }}">{{ movie.title }}</a></h2>
+</div>
+<div class="narrow-content">
+    <form method="post" action="{{ url_for('movies.review', index=movie_index) }}" class="grid-form-container">
+        {% if errors|length > 0 %}
+        <div class="form-errors grid-form-row">
+            <ul>
+                {% for e in errors %}
+                <li>{{ e }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        {{ form.csrf_token }}
+        {{ form.rating.label(class_ = "grid-form-label") }}
+        {{ form.rating }}
+        {{ form.review_text.label(class_ = "grid-form-label") }}
+        {{ form.review_text }}
+        <div class="grid-form-row">
+            {{ form.submit }}
+        </div>
+    </form>
+</div>
+{% endblock %}

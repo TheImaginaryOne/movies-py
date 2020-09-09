@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, SelectField, SelectMultipleField
+from wtforms import StringField, SubmitField, SelectField, SelectMultipleField, TextAreaField
 from domainmodel.repository import Repository
 
 
@@ -17,9 +17,32 @@ class SearchForm(FlaskForm):
     genres = SelectMultipleField('Genres')
     submit = SubmitField('submit')
 
+def ratings():
+    return [(i, i) for i in range(1, 11)]
+
+class ReviewForm(FlaskForm):
+    review_text = TextAreaField('Review text')
+    rating = SelectField('Rating')
+    submit = SubmitField('Submit')
 
 def movies_blueprint(repository: Repository):
     blueprint = Blueprint('movies', __name__, template_folder='templates', static_folder='static')
+
+    @blueprint.route('/movies/<int:index>/review', methods=['GET', 'POST'])
+    def review(index):
+        form = ReviewForm()
+        form.rating.choices = ratings()
+        movie = repository.get_movie(index)
+        if movie is None:
+            return render_template('404.html'), 404
+        return render_template('review_form.html', movie_index=index, movie=movie, form=form, errors=form.review_text.errors)
+
+    @blueprint.route('/movies/<int:index>')
+    def single_movie(index):
+        movie = repository.get_movie(index)
+        if movie is None:
+            return render_template('404.html'), 404
+        return render_template('single_movie.html', movie=movie, index=index)
 
     @blueprint.route('/movies')
     def show():
