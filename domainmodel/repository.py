@@ -2,6 +2,7 @@ from domainmodel.movie import Movie
 from domainmodel.director import Director
 from domainmodel.actor import Actor
 from domainmodel.genre import Genre
+from domainmodel.review import Review
 from domainmodel.user import User
 
 
@@ -31,6 +32,8 @@ class Repository:
     def get_movie(self, index):
         pass
 
+    def get_reviews(self, movie_index) -> [(User, Review)]:
+        pass
 
 def filter_results(director, actors, genres):
     def x(m: Movie):
@@ -78,6 +81,23 @@ class MemoryRepository(Repository):
             return self.movies[index]
         return None
 
+    def get_reviews(self, movie_index):
+        reviews = []
+        if movie_index < len(self.movies):
+            for user in self.users:
+                review = next(filter(lambda u: u.movie == self.movies[movie_index], user.reviews), None)
+                if review is not None:
+                    reviews.append((user, review))
+
+            return reviews
+        return None
+
+    def add_review(self, user_index, review) -> [(User, Review)]:
+        if user_index < len(self.users):
+            self.users[user_index].add_review(review)
+            return True
+        return False
+
     def login(self, username, password):
         users = list(filter(lambda u: u[1].user_name == username, enumerate(self.users)))
 
@@ -86,4 +106,3 @@ class MemoryRepository(Repository):
 
         if users[0][1].password == password:
             return users[0][0]  # return id of user
-        return None

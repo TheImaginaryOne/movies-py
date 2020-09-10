@@ -4,6 +4,7 @@ from domainmodel.director import Director
 from domainmodel.actor import Actor
 from domainmodel.genre import Genre
 from domainmodel.user import User
+from domainmodel.review import Review
 
 d1 = Director("DJ Khaled")
 d2 = Director("Angry Shrek")
@@ -86,3 +87,23 @@ def test_user_index():
     assert repo.get_user(0) == User("a", "c")
     assert repo.get_user(1) == User("b", "d")
     assert repo.get_user(2) is None
+
+def test_add_review():
+    repo = MemoryRepository(movies_mock, [], [], [])
+    u1, u2 = User("bob", "pass123"), User("bobb", "pass12")
+
+    assert repo.add_user(u1.user_name, u1.password)
+    assert repo.add_user(u2.user_name, u2.password)
+
+    r1 = Review(m1, "Darth Plagueis was dumb, why couldn't he stop his apprentice??!!", 3)
+    r2 = Review(m2, "The Sith did nothing wrong, Jedis just spread fake news", 7)
+    r3 = Review(m2, "Star Wars is silly", 1)
+
+    # user_id, review
+    repo.add_review(0, r1)
+    repo.add_review(0, r2)
+    repo.add_review(1, r3)
+
+    # review for the movie m1, id "1"
+    assert repo.get_reviews(1) == [(u1, r1)]
+    assert repo.get_reviews(2) == [(u1, r2), (u2, r3)]
