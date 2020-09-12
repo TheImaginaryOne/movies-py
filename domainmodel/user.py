@@ -36,9 +36,4 @@ class User:
             self.time_spent_watching_movies_minutes += movie.runtime_minutes
 
     def add_review(self, review: Review):
-        same_movie_reviews = list(filter(lambda x: self.reviews[x].movie == review.movie, range(len(self.reviews))))
-        if len(same_movie_reviews) == 0:
-            self.reviews.append(review)
-        else:
-            # replace
-            self.reviews[same_movie_reviews[0]] = review
+        self.reviews.append(review)

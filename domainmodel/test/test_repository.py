@@ -98,12 +98,14 @@ def test_add_review():
     r1 = Review(m1, "Darth Plagueis was dumb, why couldn't he stop his apprentice??!!", 3)
     r2 = Review(m2, "The Sith did nothing wrong, Jedis just spread fake news", 7)
     r3 = Review(m2, "Star Wars is silly", 1)
+    r4 = Review(m2, "Oops the previous review was written by my cat, Star Wars is wonderful", 9)
 
     # user_id, review
     repo.add_review(0, r1)
     repo.add_review(0, r2)
     repo.add_review(1, r3)
+    repo.add_review(1, r4)
 
     # review for the movie m1, id "1"
-    assert repo.get_reviews(1) == [(u1, r1)]
-    assert repo.get_reviews(2) == [(u1, r2), (u2, r3)]
+    assert repo.get_reviews(1) == [(u1, [r1])]
+    assert repo.get_reviews(2) == [(u1, [r2]), (u2, [r3, r4])]

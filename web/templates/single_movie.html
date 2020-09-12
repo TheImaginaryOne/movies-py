@@ -37,12 +37,14 @@
         <h2>Reviews</h2>
         <div><a href="{{ url_for('movies.review', index=index) }}">Add/edit your review</a></div>
         <div>
-            {% for (user, review) in reviews %}
+            {% for (user, user_reviews) in reviews %}
+            {% for review in user_reviews %}
             <div>
                 {{ user.user_name }}
-                {{ user.rating }}/10
+                {{ review.rating }}/10
                 {{ review.review_text }}
             </div>
+            {% endfor %}
             {% endfor %}
         </div>
     </div>

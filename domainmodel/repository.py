@@ -82,12 +82,12 @@ class MemoryRepository(Repository):
         return None
 
     def get_reviews(self, movie_index):
-        reviews = []
         if movie_index < len(self.movies):
+            reviews = []
             for user in self.users:
-                review = next(filter(lambda u: u.movie == self.movies[movie_index], user.reviews), None)
-                if review is not None:
-                    reviews.append((user, review))
+                user_reviews = list(filter(lambda u: u.movie == self.movies[movie_index], user.reviews))
+                if len(user_reviews) > 0:
+                    reviews.append((user, user_reviews))
 
             return reviews
         return None
