@@ -100,6 +100,9 @@ class MemoryRepository(Repository):
             return True
         return False
 
+    def has_user(self, user_id):
+        return 0 <= user_id < len(self.users)
+
     def login(self, username, password):
         users = list(filter(lambda u: u[1].user_name == username, enumerate(self.users)))
 

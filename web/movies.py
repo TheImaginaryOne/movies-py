@@ -3,6 +3,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField, SelectMultipleField, TextAreaField
 from domainmodel.repository import Repository
 from domainmodel.review import Review
+from web.user import is_logged_in
 
 
 def unwrap_or(x, default):
@@ -31,7 +32,7 @@ def movies_blueprint(repository: Repository):
 
     @blueprint.route('/movies/<int:index>/review', methods=['GET', 'POST'])
     def review(index):
-        if 'user' not in session:
+        if not is_logged_in(repository):
             return redirect(url_for("user.login"))
 
         user_id = session['user']

@@ -14,6 +14,9 @@ def validate_username(form, field):
         if not (ch.isalnum() or ch == '_'):
             raise ValidationError("Username must only have a-z, A-Z or _")
 
+def is_logged_in(repository):
+    return 'user' in session and repository.has_user(session['user'])
+
 
 MIN_PASSWORD_LENGTH = 8
 
@@ -46,7 +49,7 @@ def blueprint(repository: Repository):
     @bp.route('/login', methods=['GET', 'POST'])
     def login():
         form = LoginForm()
-        if 'user' in session:
+        if is_logged_in(repository):
             return redirect(url_for('movies.show'))
         error = None
         if request.method == 'POST':
@@ -79,7 +82,7 @@ def blueprint(repository: Repository):
 def inject_current_user(app: Flask, repository: Repository):
     @app.context_processor
     def current_user():
-        if 'user' in session:
+        if is_logged_in(repository):
             return {"current_user": repository.get_user(session['user'])}
         return {"current_user": None}
     return current_user
