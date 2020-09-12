@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, session, redirect, url_for
+from flask import Blueprint, render_template, request, session, redirect, url_for, current_app as app
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField, SelectMultipleField, TextAreaField
 from domainmodel.repository import Repository
@@ -49,6 +49,7 @@ def movies_blueprint(repository: Repository):
 
         review = Review(movie, form.review_text.data, rating)  # TODO!!!
         repository.add_review(user_id, review)
+        app.logger.info(f"Review (user_id {user_id})")
 
         return redirect(url_for('movies.show', index=index))
     @blueprint.route('/movies/<int:index>')

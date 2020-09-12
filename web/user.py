@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, url_for, session, Flask
+from flask import Blueprint, render_template, request, url_for, session, Flask, current_app as app
 from flask_wtf import FlaskForm
 from werkzeug.utils import redirect
 from wtforms import StringField, SubmitField, PasswordField, ValidationError
@@ -51,11 +51,14 @@ def blueprint(repository: Repository):
         error = None
         if request.method == 'POST':
             user_id = repository.login(form.username.data, form.password.data)
+            app.logger.info(f"Login ({form.username.data}, {form.password.data})")
             if user_id is not None:
                 session.clear()
                 session['user'] = user_id
+                app.logger.info("Login successful")
                 return redirect(url_for('movies.show'))
             else:
+                app.logger.info("Login unsuccessful")
                 error = "Wrong username or password"
         return render_template("login.html", form=form, error=error)
 
@@ -65,6 +68,7 @@ def blueprint(repository: Repository):
         if request.method == 'POST':
             # print(form.username.data, form.password.data)
             if form.validate() and repository.add_user(form.username.data, form.password.data):
+                app.logger.info(f"Register ({form.username.data}, {form.password.data})")
                 return redirect(url_for("user.login"))
         return render_template("register.html", form=form, errors=form.username.errors + form.password.errors)
 

@@ -26,7 +26,10 @@ def init():
                                   movie_file_reader.dataset_of_actors,
                                   movie_file_reader.dataset_of_directors,
                                   movie_file_reader.dataset_of_genres)
-    return create_app(repository)
-
+    app = create_app(repository)
+    if app.debug == True:
+        (u, p) = ("user1234", "pass1234")
+        repository.add_user(u, p)
+    return app
 
 app = init()
