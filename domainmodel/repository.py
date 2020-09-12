@@ -106,5 +106,5 @@ class MemoryRepository(Repository):
         if len(users) == 0:
             return None
 
-        if users[0][1].password == password:
+        if users[0][1].verify_password(password):
             return users[0][0]  # return id of user

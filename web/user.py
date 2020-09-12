@@ -51,7 +51,7 @@ def blueprint(repository: Repository):
         error = None
         if request.method == 'POST':
             user_id = repository.login(form.username.data, form.password.data)
-            app.logger.info(f"Login ({form.username.data}, {form.password.data})")
+            app.logger.info(f"Login ({form.username.data})")
             if user_id is not None:
                 session.clear()
                 session['user'] = user_id
@@ -68,7 +68,7 @@ def blueprint(repository: Repository):
         if request.method == 'POST':
             # print(form.username.data, form.password.data)
             if form.validate() and repository.add_user(form.username.data, form.password.data):
-                app.logger.info(f"Register ({form.username.data}, {form.password.data})")
+                app.logger.info(f"Register ({form.username.data})")
                 return redirect(url_for("user.login"))
         return render_template("register.html", form=form, errors=form.username.errors + form.password.errors)
 

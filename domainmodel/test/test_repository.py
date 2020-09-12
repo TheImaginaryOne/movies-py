@@ -92,8 +92,8 @@ def test_add_review():
     repo = MemoryRepository(movies_mock, [], [], [])
     u1, u2 = User("bob", "pass123"), User("bobb", "pass12")
 
-    assert repo.add_user(u1.user_name, u1.password)
-    assert repo.add_user(u2.user_name, u2.password)
+    assert repo.add_user("bob", "pass123")
+    assert repo.add_user("bobb", "pass12")
 
     r1 = Review(m1, "Darth Plagueis was dumb, why couldn't he stop his apprentice??!!", 3)
     r2 = Review(m2, "The Sith did nothing wrong, Jedis just spread fake news", 7)

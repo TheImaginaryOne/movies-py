@@ -1,11 +1,12 @@
 from domainmodel.movie import Movie
 from domainmodel.review import Review
+from passlib.hash import pbkdf2_sha256 as hasher
 
 
 class User:
     def __init__(self, user_name, password):
         self.user_name: str = user_name
-        self.password: str = password
+        self.password_hash: str = hasher.hash(password)
         self.watched_movies: [Movie] = []
         self.reviews: [Review] = []
         self.time_spent_watching_movies_minutes: int = 0
@@ -23,6 +24,9 @@ class User:
 
     def __eq__(self, other: 'User'):
         return self._user_name == other._user_name
+    
+    def verify_password(self, password):
+        return hasher.verify(password, self.password_hash)
 
     def __lt__(self, other: 'User'):
         return self._user_name < other._user_name
