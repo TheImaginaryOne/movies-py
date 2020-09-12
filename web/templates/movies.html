@@ -34,7 +34,11 @@
     {% for movie in movies %}
         <div class="movie-preview-item">
             <div>
-                <h2 class="movie-preview-title">{{ movie.title | e }} ({{ movie.release_year | e }})</h2>
+                <h2 class="movie-preview-title">
+                    <a href="{{ url_for('movies.single_movie', index = movie.id) }}">
+                        {{ movie.title | e }} ({{ movie.release_year | e }})
+                    </a>
+                </h2>
             </div>
             <div>
                 <span class="movie-data-key">Director</span>

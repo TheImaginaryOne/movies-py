@@ -73,6 +73,13 @@ body {
     font-size: 24;
     margin: 0;
 }
+.movie-preview-title > a {
+    text-decoration: none;
+    color: #333;
+}
+.movie-preview-title > a:hover {
+    color: #888;
+}
 .movie-data-key {
     font-weight: bold;
 }

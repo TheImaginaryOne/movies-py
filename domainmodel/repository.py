@@ -47,6 +47,8 @@ def filter_results(director, actors, genres):
 class MemoryRepository(Repository):
     def __init__(self, m, a, d, g):
         self.movies = m
+        for i, movie in enumerate(m):
+            movie.id = i
         self.actors = a
         self.directors = d
         self.genres = g
