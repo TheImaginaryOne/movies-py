@@ -92,7 +92,7 @@ class MemoryRepository(Repository):
             return reviews
         return None
 
-    def add_review(self, user_index, review) -> [(User, Review)]:
+    def add_review(self, user_index, review):
         if user_index < len(self.users):
             self.users[user_index].add_review(review)
             return True

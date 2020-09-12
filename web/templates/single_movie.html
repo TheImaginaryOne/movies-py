@@ -36,7 +36,15 @@
     <div class="reviews-container">
         <h2>Reviews</h2>
         <div><a href="{{ url_for('movies.review', index=index) }}">Add/edit your review</a></div>
-
+        <div>
+            {% for (user, review) in reviews %}
+            <div>
+                {{ user.user_name }}
+                {{ user.rating }}/10
+                {{ review.review_text }}
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </div>
 {% endblock %}

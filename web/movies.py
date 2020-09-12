@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, session, redirect, url_for
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, SelectField, SelectMultipleField, TextAreaField
 from domainmodel.repository import Repository
+from domainmodel.review import Review
 
 
 def unwrap_or(x, default):
@@ -30,19 +31,33 @@ def movies_blueprint(repository: Repository):
 
     @blueprint.route('/movies/<int:index>/review', methods=['GET', 'POST'])
     def review(index):
-        form = ReviewForm()
-        form.rating.choices = ratings()
+        if 'user' not in session:
+            return redirect(url_for("user.login"))
+
+        user_id = session['user']
         movie = repository.get_movie(index)
         if movie is None:
             return render_template('404.html'), 404
-        return render_template('review_form.html', movie_index=index, movie=movie, form=form, errors=form.review_text.errors)
+        form = ReviewForm()
+        form.rating.choices = ratings()
+        
+        try:
+            rating = int(form.rating.data)
+        except:
+            return render_template('review_form.html', movie_index=index, movie=movie, form=form, errors=form.review_text.errors)
 
+
+        review = Review(movie, form.review_text.data, rating)  # TODO!!!
+        repository.add_review(user_id, review)
+
+        return redirect(url_for('movies.show', index=index))
     @blueprint.route('/movies/<int:index>')
     def single_movie(index):
         movie = repository.get_movie(index)
         if movie is None:
             return render_template('404.html'), 404
-        return render_template('single_movie.html', movie=movie, index=index)
+        reviews = repository.get_reviews(index)
+        return render_template('single_movie.html', movie=movie, index=index, reviews=reviews)
 
     @blueprint.route('/movies')
     def show():
