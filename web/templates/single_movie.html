@@ -25,7 +25,13 @@
             {% endfor %}
         </span>
         <span class="movie-data-key">Revenue</span>
-        <span>${{ movie.revenue | e }} million</span>
+        <span>
+            {% if movie.revenue != None %}
+            ${{ movie.revenue | e }} million
+            {% else %}
+            -
+            {% endif %}
+        </span>
         <span class="movie-data-key">Genres</span>
         <span>
             {% for genre in movie.genres %}
@@ -39,10 +45,14 @@
         <div>
             {% for (user, user_reviews) in reviews %}
             {% for review in user_reviews %}
-            <div>
-                {{ user.user_name }}
-                {{ review.rating }}/10
-                {{ review.review_text }}
+            <div class="review">
+                <div>
+                    <span class="review-username">{{ user.user_name }}</span>
+                    <span class="review-rating">rated it {{ review.rating }}/10</span>
+                </div>
+                <div>
+                    {{ review.review_text }}
+                </div>
             </div>
             {% endfor %}
             {% endfor %}

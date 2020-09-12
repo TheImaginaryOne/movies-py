@@ -26,30 +26,32 @@
     </form>
 </div>
 <div class="content">
-{{ pagination.previous_next(previous_id, next_id, url_query) }}
-    <span></span>
-</div>
-<div class="content">
-{% for movie in movies %}
-    <div class="movie-preview-item">
-        <div>
-            <h2 class="movie-preview-title">{{ movie.title | e }} ({{ movie.release_year | e }})</h2>
-        </div>
-        <div>
-            <span class="movie-data-key">Director</span>
-            <span>{{ movie.director.director_full_name | e }}</span>
-            <span class="text-separator">|</span>
-            <span class="movie-data-key">Actors:</span>
-            <span>
-            {% for actor in movie.actors %}
-            {{ actor.actor_full_name | e + ", " }}
-            {% endfor %}
-            </span>
-        </div>
-    </div>
-{% endfor %}
-</div>
-<div class="content">
+    <div class="pagination-container">
     {{ pagination.previous_next(previous_id, next_id, url_query) }}
-    {% endblock %}
+        <span></span>
+    </div>
+    <div class="movie-list">
+    {% for movie in movies %}
+        <div class="movie-preview-item">
+            <div>
+                <h2 class="movie-preview-title">{{ movie.title | e }} ({{ movie.release_year | e }})</h2>
+            </div>
+            <div>
+                <span class="movie-data-key">Director</span>
+                <span>{{ movie.director.director_full_name | e }}</span>
+                <span class="text-separator">|</span>
+                <span class="movie-data-key">Actors:</span>
+                <span>
+                {% for actor in movie.actors %}
+                {{ actor.actor_full_name | e + ", " }}
+                {% endfor %}
+                </span>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+    <div class="pagination-container">
+        {{ pagination.previous_next(previous_id, next_id, url_query) }}
+        {% endblock %}
+    </div>
 </div>

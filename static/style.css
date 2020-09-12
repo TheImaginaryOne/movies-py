@@ -43,8 +43,10 @@ body {
     padding: 0 10%;
 }
 .top-block {
-    margin-bottom: 16px;
     border-bottom: 1px solid #aaa;
+}
+.grey-background {
+    background-color: #eee;
 }
 /* search form */
 .search-form-container {
@@ -61,8 +63,11 @@ body {
     vertical-align: top;
 }
 /* on movie page*/
-.movie-preview-item {
-    margin-bottom: 16px;
+.movie-list, .pagination-container {
+    background-color: #fff;
+}
+.movie-list > .movie-preview-item {
+    padding: 8px;
 }
 .movie-preview-title {
     font-size: 24;
@@ -77,6 +82,9 @@ body {
 }
 .movie-search-text {
     width: 200px;
+}
+.pagination-container {
+    padding: 8px 8px;
 }
 /* movie details */
 .movie-details {
@@ -101,6 +109,20 @@ body {
 .movie-rating-extra {
     font-size: 16px;
     color: #888;
+}
+.review {
+    margin: 16px 0;
+    padding: 12px;
+    box-shadow: 0 2px 4px #bbb;
+    border-radius: 4px;
+}
+.review-username {
+    font-weight: bold;
+    font-size: 20px;
+}
+.review-rating {
+    color: #888;
+    font-size: 20px;
 }
 
 /* login form */

@@ -51,7 +51,7 @@ def movies_blueprint(repository: Repository):
         repository.add_review(user_id, review)
         app.logger.info(f"Review (user_id {user_id})")
 
-        return redirect(url_for('movies.show', index=index))
+        return redirect(url_for('movies.single_movie', index=index))
     @blueprint.route('/movies/<int:index>')
     def single_movie(index):
         movie = repository.get_movie(index)
