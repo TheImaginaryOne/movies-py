@@ -1,29 +1,31 @@
 {% extends "base.html" %}
 {% import "pagination.html" as pagination %}
 {% block content %}
-<div class="content">
-    <h1>Movies - Search Results</h1>
-</div>
-<div class="content top-block">
-    <form method="get" action="{{ url_for('movies.show') }}">
-    <div class="search-form-container">
-        <div class="search-form-item">
-        {{ form.director.label(class_="search-form-label") }}
-        {{ form.director(class_="movie-search-text") }}
-        </div>
-        <div class="search-form-item">
-        {{ form.actors.label(class_="search-form-label") }}
-        {{ form.actors(class_="movie-search-select") }}
-        </div>
-        <div class="search-form-item">
-        {{ form.genres.label(class_="search-form-label") }}
-        {{ form.genres(class_="movie-search-select") }}
-        </div>
-        <div>
-            <input type="submit" value="Search">
-        </div>
+<div class="top-block">
+    <div class="content">
+        <h1>Movies - Search Results</h1>
     </div>
-    </form>
+    <div class="content">
+        <form method="get" action="{{ url_for('movies.show') }}">
+        <div class="search-form-container">
+            <div class="search-form-item">
+            {{ form.director.label(class_="search-form-label") }}
+            {{ form.director(class_="movie-search-text") }}
+            </div>
+            <div class="search-form-item">
+            {{ form.actors.label(class_="search-form-label") }}
+            {{ form.actors(class_="movie-search-select") }}
+            </div>
+            <div class="search-form-item">
+            {{ form.genres.label(class_="search-form-label") }}
+            {{ form.genres(class_="movie-search-select") }}
+            </div>
+            <div>
+                <input type="submit" value="Search">
+            </div>
+        </div>
+        </form>
+    </div>
 </div>
 <div class="content">
     <div class="pagination-container">
