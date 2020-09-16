@@ -5,14 +5,13 @@ from wtforms import StringField, SubmitField, PasswordField, ValidationError
 
 from domainmodel.repository import Repository
 
-
 # Only A-Z|a-z|_ allowed (test!?)
 def validate_username(form, field):
     if len(field.data) == 0:
-        raise ValidationError("Username must not be empty")
+        raise ValidationError(ErrorMessages.non_empty_username)
     for ch in field.data:
         if not (ch.isalnum() or ch == '_'):
-            raise ValidationError("Username must only have a-z, A-Z or _")
+            raise ValidationError(ErrorMessages.invalid_username)
 
 def is_logged_in(repository):
     return 'user' in session and repository.has_user(session['user'])
@@ -20,10 +19,17 @@ def is_logged_in(repository):
 
 MIN_PASSWORD_LENGTH = 8
 
+class ErrorMessages:
+    non_empty_username = 'Username must not be empty'
+    invalid_username = 'Username must only have a-z, A-Z or _'
+    invalid_password = f'Password must have at least {MIN_PASSWORD_LENGTH} characters'
+    duplicate_username = 'Username already exists'
+    invalid_login = 'Wrong username or password'
+
 
 def validate_password(form, field):
     if len(field.data) < MIN_PASSWORD_LENGTH:
-        raise ValidationError(f"Password must have at least {MIN_PASSWORD_LENGTH} characters")
+        raise ValidationError(ErrorMessages.invalid_password)
 
 
 class LoginForm(FlaskForm):
@@ -62,18 +68,27 @@ def blueprint(repository: Repository):
                 return redirect(url_for('movies.show'))
             else:
                 app.logger.info("Login unsuccessful")
-                error = "Wrong username or password"
+                error = ErrorMessages.invalid_login
         return render_template("login.html", form=form, error=error)
 
     @bp.route('/register', methods=['GET', 'POST'])
     def register():
         form = RegisterForm()
+        errors = []
         if request.method == 'POST':
             # print(form.username.data, form.password.data)
-            if form.validate() and repository.add_user(form.username.data, form.password.data):
-                app.logger.info(f"Register ({form.username.data})")
-                return redirect(url_for("user.login"))
-        return render_template("register.html", form=form, errors=form.username.errors + form.password.errors)
+            if form.validate():
+                if repository.add_user(form.username.data, form.password.data):
+                    app.logger.info(f"Register ({form.username.data})")
+                    return redirect(url_for("user.login"))
+                else:
+                    errors.append(ValidationError(ErrorMessages.duplicate_username))
+            errors.extend(form.username.errors)
+            errors.extend(form.password.errors)
+
+        app.logger.info(f"Errors: {errors}")
+
+        return render_template("register.html", form=form, errors=errors)
 
     return bp
 
