@@ -2,7 +2,7 @@ from flask import Flask
 
 from datafilereaders.movie_file_csv_reader import MovieFileCSVReader
 from domainmodel.repository import MemoryRepository
-from web import movies, user
+from web import movies, user, setup_app
 
 
 def create_app(repository, test_config=None):
@@ -14,6 +14,7 @@ def create_app(repository, test_config=None):
 
     app.register_blueprint(movies.movies_blueprint(repository))
     app.register_blueprint(user.blueprint(repository))
+    setup_app(app)
     user.inject_current_user(app, repository)
     return app
 
