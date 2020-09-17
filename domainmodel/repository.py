@@ -35,6 +35,10 @@ class Repository:
     def get_reviews(self, movie_index) -> [(User, Review)]:
         pass
 
+    def add_review(self, user_id, review):
+        pass
+
+
 def filter_results(director, actors, genres):
     def x(m: Movie):
         return (director == "" or m.director == Director(director)) \

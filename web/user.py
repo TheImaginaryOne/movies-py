@@ -6,15 +6,15 @@ from wtforms import StringField, SubmitField, PasswordField, ValidationError
 from domainmodel.repository import Repository
 
 # Only A-Z|a-z|_ allowed (test!?)
+from web import services
+
+
 def validate_username(form, field):
     if len(field.data) == 0:
         raise ValidationError(ErrorMessages.non_empty_username)
     for ch in field.data:
         if not (ch.isalnum() or ch == '_'):
             raise ValidationError(ErrorMessages.invalid_username)
-
-def is_logged_in(repository):
-    return 'user' in session and repository.has_user(session['user'])
 
 
 MIN_PASSWORD_LENGTH = 8
@@ -55,19 +55,13 @@ def blueprint(repository: Repository):
     @bp.route('/login', methods=['GET', 'POST'])
     def login():
         form = LoginForm()
-        if is_logged_in(repository):
+        if services.user.is_logged_in(repository):
             return redirect(url_for('movies.show'))
         error = None
         if request.method == 'POST':
-            user_id = repository.login(form.username.data, form.password.data)
-            app.logger.info(f"Login ({form.username.data})")
-            if user_id is not None:
-                session.clear()
-                session['user'] = user_id
-                app.logger.info("Login successful")
+            if services.user.login(repository, form.username.data, form.password.data):
                 return redirect(url_for('movies.show'))
             else:
-                app.logger.info("Login unsuccessful")
                 error = ErrorMessages.invalid_login
         return render_template("login.html", form=form, error=error)
 
@@ -78,8 +72,7 @@ def blueprint(repository: Repository):
         if request.method == 'POST':
             # print(form.username.data, form.password.data)
             if form.validate():
-                if repository.add_user(form.username.data, form.password.data):
-                    app.logger.info(f"Register ({form.username.data})")
+                if services.user.register(repository, form.username.data, form.password.data):
                     return redirect(url_for("user.login"))
                 else:
                     errors.append(ValidationError(ErrorMessages.duplicate_username))
@@ -97,7 +90,7 @@ def blueprint(repository: Repository):
 def inject_current_user(app: Flask, repository: Repository):
     @app.context_processor
     def current_user():
-        if is_logged_in(repository):
+        if services.user.is_logged_in(repository):
             return {"current_user": repository.get_user(session['user'])}
         return {"current_user": None}
     return current_user

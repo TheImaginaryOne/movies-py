@@ -1,5 +1,5 @@
 from test.test_common import client_with_data
-from web.movies import MOVIES_ON_PAGE
+from web.services.movies import MOVIES_ON_PAGE
 
 
 def test_movies_basic():
