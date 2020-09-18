@@ -60,7 +60,11 @@ def movies_blueprint(repository: Repository):
             return render_template('404.html'), 404
 
         reviews = services.movies.get_reviews(repository, index)
-        return render_template('single_movie.html', movie=movie, index=index, reviews=reviews)
+        return render_template('single_movie.html',
+                               movie=movie,
+                               index=index,
+                               reviews=reviews,
+                               poster_url=services.movies.get_poster_url(movie))
 
     @blueprint.route('')
     def show():

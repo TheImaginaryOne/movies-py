@@ -96,6 +96,20 @@ body {
     padding: 8px 8px;
 }
 /* movie details */
+.single-movie-content {
+    display: grid;
+    grid-template-columns: 300px auto;
+}
+.movie-sidebar {
+    padding-top: 20px;
+    padding-right: 40px;
+}
+.movie-poster {
+    width: 100%;
+}
+.movie-main {
+}
+/* */
 .movie-details {
     display: grid;
     grid-template-columns: fit-content(20%) 1fr;

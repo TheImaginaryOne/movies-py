@@ -1,5 +1,7 @@
+import requests
 from flask import session, current_app
 
+from domainmodel.movie import Movie
 from domainmodel.repository import Repository
 from domainmodel.review import Review
 
@@ -30,3 +32,27 @@ def view_movies(repository: Repository, page, director, actors, genres):
 
     return repository.view_movies(page * MOVIES_ON_PAGE, MOVIES_ON_PAGE, director, actors,
                                   genres)
+
+
+def get_poster_url(movie: Movie):
+    key = current_app.config.get('TMDB_KEY')
+    if key is None:
+        current_app.logger.error("TMDB_KEY not set")
+        return ''
+    try:
+        response = requests.get(f'https://api.themoviedb.org/3/search/movie',
+                                params={
+                                    'api_key': key,
+                                    'query': movie.title,
+                                    'year': movie.release_year
+                                })
+        contents = response.json()
+        poster_path = contents['results'][0]['poster_path']
+
+        return f'http://image.tmdb.org/t/p/w500/{poster_path}'
+    except ValueError as e:
+        current_app.logger.error(f"TMDB response is not expected format: {e}")
+        return ''
+    except Exception as e:
+        current_app.logger.error(f'Error fetching from TMDB: {e}')
+        return ''

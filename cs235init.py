@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 
 from datafilereaders.movie_file_csv_reader import MovieFileCSVReader
@@ -8,6 +10,8 @@ from web import movies, user, setup_app
 def create_app(repository, test_config=None):
     app = Flask(__name__)
     app.secret_key = "TODO"
+    if 'CONFIG' in os.environ:
+        app.config.from_envvar('CONFIG')
 
     if test_config is not None:
         app.config.from_mapping(test_config)

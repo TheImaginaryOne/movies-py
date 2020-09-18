@@ -1,44 +1,54 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="content single-movie-content">
+    <div class="movie-sidebar">
+        <img src="{{ poster_url }}" class="movie-poster" />
+    </div>
+    <div class="movie-main">
+        <h1>{{ movie.title }} ({{ movie.release_year }})</h1>
+        <div class="movie-ratings">
+            <span class="movie-data-key">Metascore</span>
+            <span class="movie-data-key">IMDB Rating</span>
+            <div>
+                <span class="movie-rating">{{ movie.metascore }}</span>
+                <span class="movie-rating-extra">/100</span>
+            </div>
+            <div>
+                <span class="movie-rating">{{ movie.rating }}</span>
+                <span class="movie-rating-extra">/10 ({{ movie.votes }} votes)</span>
+            </div>
+        </div>
+        <hr class="movie-details-hr"/>
+        <div class="movie-details">
+            <span class="movie-data-key">Director</span>
+            <span>{{ movie.director.director_full_name }}</span>
+            <span class="movie-data-key">Actors</span>
+            <span>
+                {% for actor in movie.actors %}
+                {{ actor.actor_full_name }}{{ ", " if not loop.last }}
+                {% endfor %}
+            </span>
+            <span class="movie-data-key">Revenue</span>
+            <span>
+                {% if movie.revenue != None %}
+                ${{ movie.revenue | e }} million
+                {% else %}
+                -
+                {% endif %}
+            </span>
+            <span class="movie-data-key">Genres</span>
+            <span>
+                {% for genre in movie.genres %}
+                {{ genre.genre_name }}{{ ", " if not loop.last }}
+                {% endfor %}
+            </span>
+        </div>
+        <div>
+            <p>{{ movie.description }}</p>
+        </div>
+    </div>
+</div>
 <div class="content">
-    <h1>{{ movie.title }} ({{ movie.release_year }})</h1>
-    <div class="movie-ratings">
-        <span class="movie-data-key">Metascore</span>
-        <span class="movie-data-key">IMDB Rating</span>
-        <div>
-            <span class="movie-rating">{{ movie.metascore }}</span>
-            <span class="movie-rating-extra">/100</span>
-        </div>
-        <div>
-            <span class="movie-rating">{{ movie.rating }}</span>
-            <span class="movie-rating-extra">/10 ({{ movie.votes }} votes)</span>
-        </div>
-    </div>
-    <hr class="movie-details-hr"/>
-    <div class="movie-details">
-        <span class="movie-data-key">Director</span>
-        <span>{{ movie.director.director_full_name }}</span>
-        <span class="movie-data-key">Actors</span>
-        <span>
-            {% for actor in movie.actors %}
-            {{ actor.actor_full_name }}{{ ", " if not loop.last }}
-            {% endfor %}
-        </span>
-        <span class="movie-data-key">Revenue</span>
-        <span>
-            {% if movie.revenue != None %}
-            ${{ movie.revenue | e }} million
-            {% else %}
-            -
-            {% endif %}
-        </span>
-        <span class="movie-data-key">Genres</span>
-        <span>
-            {% for genre in movie.genres %}
-            {{ genre.genre_name }}{{ ", " if not loop.last }}
-            {% endfor %}
-        </span>
-    </div>
     <div class="reviews-container">
         <h2>Reviews</h2>
         <div><a href="{{ url_for('movies.review', index=index) }}">Add/edit your review</a></div>
