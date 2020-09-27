@@ -13,7 +13,7 @@ python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 python -m pytest
-FLASK_APP=cs235init.py FLASK_DEBUG=1 CONFIG=settings.cfg python -m flask run
+FLASK_DEBUG=1 CONFIG=settings.cfg python -m flask run
 ```
 Note if `FLASK_DEBUG=1`, then there is a demo user with username `user1234` and
 password `pass1234`.
