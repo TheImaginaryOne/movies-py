@@ -9,9 +9,10 @@ from web import movies, user, setup_app
 
 def create_app(repository, test_config=None):
     app = Flask(__name__)
-    app.secret_key = "TODO"
     if 'CONFIG' in os.environ:
         app.config.from_envvar('CONFIG')
+    if app.debug:
+        app.secret_key = 'TEST'
 
     if test_config is not None:
         app.config.from_mapping(test_config)
