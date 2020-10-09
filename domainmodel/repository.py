@@ -1,3 +1,5 @@
+from abc import abstractmethod
+
 from domainmodel.movie import Movie
 from domainmodel.director import Director
 from domainmodel.actor import Actor
@@ -14,27 +16,34 @@ class Repository:
         self.genres = None
         self.users = None
 
+    @abstractmethod
     def view_movies(self, start, number, director: str = "", actors=None, genres=None):
         if genres is None:
             genres = []
         if actors is None:
             actors = []
 
+    @abstractmethod
     def add_user(self, username, password):
         pass
 
+    @abstractmethod
     def login(self, username, password):
         pass
 
+    @abstractmethod
     def get_user(self, index):
         pass
 
+    @abstractmethod
     def get_movie(self, index):
         pass
 
+    @abstractmethod
     def get_reviews(self, movie_index) -> [(User, Review)]:
         pass
 
+    @abstractmethod
     def add_review(self, user_id, review):
         pass
 
