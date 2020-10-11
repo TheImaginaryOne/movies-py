@@ -10,7 +10,7 @@ The cfg file must also have a `SECRET_KEY`.
 Create a new virtual environment to deploy:
 
 ```
-python -m venv venv
+python -m venv venv # must be python 3
 source venv/bin/activate
 pip install -r requirements.txt
 python -m pytest
