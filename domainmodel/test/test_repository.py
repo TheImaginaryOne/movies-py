@@ -46,17 +46,17 @@ def test_view_movies():
 
 
 def test_view_movies_filter():
-    assert rr.view_movies(0, 3, d1.director_full_name, [], []) == ([m1, m3], False)
-    assert rr.view_movies(0, 3, d2.director_full_name, [], []) == ([m6], False)
+    assert rr.view_movies(0, 3, d1.full_name, [], []) == ([m1, m3], False)
+    assert rr.view_movies(0, 3, d2.full_name, [], []) == ([m6], False)
 
 
 def test_view_movies_filter_actor():
-    assert rr.view_movies(0, 3, "", [a1.actor_full_name, a2.actor_full_name], []) == ([m4, m5], False)
-    assert rr.view_movies(0, 3, d1.director_full_name, [a1.actor_full_name], []) == ([m1], False)
+    assert rr.view_movies(0, 3, "", [a1.full_name, a2.full_name], []) == ([m4, m5], False)
+    assert rr.view_movies(0, 3, d1.full_name, [a1.full_name], []) == ([m1], False)
 
 
 def test_view_movies_filter_genre():
-    assert rr.view_movies(0, 3, "", [a1.actor_full_name], [g1.genre_name]) == ([m1, m4], False)
+    assert rr.view_movies(0, 3, "", [a1.full_name], [g1.name]) == ([m1, m4], False)
 
 
 def test_add_user():

@@ -8,7 +8,7 @@ class Actor:
         self.colleagues = []
 
     @property
-    def actor_full_name(self) -> str:
+    def full_name(self) -> str:
         return self.__actor_full_name
 
     def __repr__(self):

@@ -5,7 +5,7 @@ from domainmodel.user import User
 
 def test_basic():
     user1 = User('Martin', 'pw12345')
-    assert user1.user_name == "martin"
+    assert user1.username == "martin"
     assert user1.__repr__() == "<User martin>"
 
 

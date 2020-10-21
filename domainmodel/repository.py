@@ -1,5 +1,7 @@
 from abc import abstractmethod
 
+from sqlalchemy.orm import Session
+
 from domainmodel.movie import Movie
 from domainmodel.director import Director
 from domainmodel.actor import Actor
@@ -117,10 +119,62 @@ class MemoryRepository(Repository):
         return 0 <= user_id < len(self.users)
 
     def login(self, username, password):
-        users = list(filter(lambda u: u[1].user_name == username, enumerate(self.users)))
+        users = list(filter(lambda u: u[1].username == username, enumerate(self.users)))
 
         if len(users) == 0:
             return None
 
         if users[0][1].verify_password(password):
             return users[0][0]  # return id of user
+
+
+class DatabaseRepository(Repository):
+    def __init__(self, session_factory):
+        self.session_factory = session_factory
+
+    # @property
+    # def movies(self):
+    #     return Session().query(User)
+
+    @property
+    def directors(self):
+        l = self.session_factory().query(Director).all()
+        return l
+
+    @property
+    def actors(self):
+        return self.session_factory().query(Actor).all()
+
+    @property
+    def genres(self):
+        return self.session_factory().query(Genre).all()
+
+    def view_movies(self, start, number, director=None, actors=None, genres=None):
+        return []
+
+    def add_user(self, username, password):
+        pass
+        # uu = User(username, password)
+        # session = Session()
+        # session.add(uu)
+
+    def get_user(self, index):
+        return None
+
+    def get_movie(self, index):
+        return None
+
+    def get_reviews(self, movie_index):
+        return None
+
+    def add_review(self, user_index, review):
+        if user_index < len(self.users):
+            self.users[user_index].add_review(review)
+            return True
+        return False
+
+    def has_user(self, user_id):
+        return False
+
+    def login(self, username, password):
+        return None

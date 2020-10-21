@@ -5,18 +5,18 @@ from passlib.hash import pbkdf2_sha256 as hasher
 
 class User:
     def __init__(self, user_name, password):
-        self.user_name: str = user_name
+        self.username: str = user_name
         self.password_hash: str = hasher.hash(password)
         self.watched_movies: [Movie] = []
         self.reviews: [Review] = []
         self.time_spent_watching_movies_minutes: int = 0
 
     @property
-    def user_name(self):
+    def username(self):
         return self._user_name
 
-    @user_name.setter
-    def user_name(self, u: str):
+    @username.setter
+    def username(self, u: str):
         self._user_name = u.lower().strip()
 
     def __repr__(self):
