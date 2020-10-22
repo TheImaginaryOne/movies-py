@@ -10,7 +10,7 @@ from domainmodel.orm import map_model, metadata
 from domainmodel.repository import MemoryRepository, DatabaseRepository
 from web import movies, user, setup_app
 
-def create_app(test_config=None):
+def create_app(repo=None, test_config=None):
     app = Flask(__name__)
     if 'CONFIG' in os.environ:
         app.config.from_envvar('CONFIG')
@@ -25,7 +25,9 @@ def create_app(test_config=None):
     movie_file_reader.read_csv_file()
 
     repository = None
-    if app.config['REPOSITORY'] == 'memory':
+    if repo is not None:
+        repository = repo
+    elif app.config['REPOSITORY'] == 'memory':
         # Create the MemoryRepository instance for a memory-based repository.
         repository = MemoryRepository(movie_file_reader.dataset_of_movies,
                                       movie_file_reader.dataset_of_actors,
@@ -86,4 +88,5 @@ def init():
     app = create_app()
     return app
 
-app = init()
+if __name__ == '__main__':
+    app = init()
