@@ -1,4 +1,5 @@
 import os
+import click
 
 from flask import Flask
 from sqlalchemy import create_engine
@@ -6,10 +7,13 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import NullPool
 
 from datafilereaders.movie_file_csv_reader import MovieFileCSVReader
+from domainmodel.actor import Actor
 from domainmodel.orm import map_model, metadata
 from domainmodel.repository import MemoryRepository, DatabaseRepository
 from web import movies, user, setup_app
 
+
+filename = 'datafiles/Data1000Movies.csv'
 def create_app(repo=None, test_config=None):
     app = Flask(__name__)
     if 'CONFIG' in os.environ:
@@ -20,15 +24,14 @@ def create_app(repo=None, test_config=None):
     if test_config is not None:
         app.config.from_mapping(test_config)
 
-    filename = 'datafiles/Data1000Movies.csv'
-    movie_file_reader = MovieFileCSVReader(filename)
-    movie_file_reader.read_csv_file()
-
     repository = None
     if repo is not None:
         repository = repo
     elif app.config['REPOSITORY'] == 'memory':
         # Create the MemoryRepository instance for a memory-based repository.
+        movie_file_reader = MovieFileCSVReader(filename)
+        movie_file_reader.read_csv_file()
+
         repository = MemoryRepository(movie_file_reader.dataset_of_movies,
                                       movie_file_reader.dataset_of_actors,
                                       movie_file_reader.dataset_of_directors,
@@ -48,29 +51,15 @@ def create_app(repo=None, test_config=None):
                                         poolclass=NullPool,
                                         )
 
-        if app.config['TESTING'] == 'True' or len(database_engine.table_names()) == 0:
-            print("REPOPULATING DATABASE")
-            # For testing, or first-time use of the web application, reinitialise the database.
-            # clear_mappers()
-            metadata.create_all(database_engine)  # Conditionally create database tables.
-            # for table in reversed(metadata.sorted_tables):  # Remove any data from the tables.
-            #     database_engine.execute(table.delete())
-
-            # Generate mappings that map domain model classes to the database tables.
-            #map_model_to_tables()
-
-            #database_repository.populate(database_engine, data_path)
-
-        else:
-            pass
-            # Solely generate mappings that map domain model classes to the database tables.
-            # map_model_to_tables()
         map_model()
 
         # Create the database session factory using sessionmaker (this has to be done once, in a global manner)
         session_factory = sessionmaker(autocommit=False, autoflush=True, bind=database_engine)
         # Create the SQLAlchemy DatabaseRepository instance for an sqlite3-based repository.
         repository = DatabaseRepository(session_factory)
+
+        # Solely generate mappings that map domain model classes to the database tables.
+        # map_model_to_tables()
 
     app.register_blueprint(movies.movies_blueprint(repository))
     app.register_blueprint(user.blueprint(repository))
@@ -80,13 +69,42 @@ def create_app(repo=None, test_config=None):
     if app.debug:
         (u, p) = ("user1234", "pass1234")
         repository.add_user(u, p)
+
+        import logging
+        logging.basicConfig()
+        logger = logging.getLogger('sqlalchemy.engine')
+        logger.setLevel(logging.DEBUG)
+
+
+# set up command
+    @app.cli.command("load-data")
+    def load_data():
+        app.logger.info("Repopulating database")
+        # For testing, or first-time use of the web application, reinitialise the database.
+        # clear_mappers()
+
+        metadata.drop_all(database_engine)
+        metadata.create_all(database_engine)  # Conditionally create database tables.
+        # populate data
+        file_reader = MovieFileCSVReader(filename)
+        file_reader.read_csv_file()
+
+        session = session_factory()
+        session.add_all(file_reader.dataset_of_movies)
+        print(f"{len(file_reader.dataset_of_movies)} movies")
+        session.commit()
+
+        app.logger.info("Inserted objects")
+
     return app
 
 
 def init():
-
     app = create_app()
     return app
 
+
 if __name__ == '__main__':
     app = init()
+
+

@@ -18,7 +18,7 @@ class Movie:
         self._votes: int = 0
         self._revenue: Optional[float] = None
         self._metascore: Optional[float] = None
-        self.id = 0 # TODO
+        # self.id = 0 # TODO
 
     @property
     def rating(self):

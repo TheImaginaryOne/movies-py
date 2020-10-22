@@ -25,7 +25,14 @@ class MovieFileCSVReader:
                 #print(f"Movie {index} with title: {title}, release year {release_year}")
                 m = Movie(title, release_year)
                 m.description = row['Description']
+
                 director = Director(row['Director'])
+                try:
+                    # if director exists, assign the same director object to the movie
+                    index = self.dataset_of_directors.index(director)
+                    director = self.dataset_of_directors[index]
+                except ValueError:
+                    self.dataset_of_directors.append(director)
                 m.director = director
 
                 m.votes = int(row['Votes'])
@@ -36,18 +43,23 @@ class MovieFileCSVReader:
                 if row['Revenue (Millions)'] != 'N/A':
                     m.revenue = float(row['Revenue (Millions)'])
 
-                if director not in self.dataset_of_directors:
-                    self.dataset_of_directors.append(director)
+                for g in row['Genre'].split(","):
+                    genre = Genre(g)
+                    try:
+                        index = self.dataset_of_genres.index(genre)
+                        genre = self.dataset_of_genres[index]
+                    except ValueError:
+                        self.dataset_of_genres.append(genre)
+                    m.add_genre(genre)
 
-                for g in map(lambda x: Genre(x), row['Genre'].split(",")):
-                    if g not in self.dataset_of_genres:
-                        self.dataset_of_genres.append(g)
-                    m.add_genre(g)
-
-                for a in map(lambda x: Actor(x), row['Actors'].split(",")):
-                    if a not in self.dataset_of_actors:
-                        self.dataset_of_actors.append(a)
-                    m.add_actor(a)
+                for a in row['Actors'].split(","):
+                    actor = Actor(a)
+                    try:
+                        index = self.dataset_of_actors.index(actor)
+                        actor = self.dataset_of_actors[index]
+                    except ValueError:
+                        self.dataset_of_actors.append(actor)
+                    m.add_actor(actor)
 
                 if m not in self.dataset_of_movies:
                     self.dataset_of_movies.append(m)

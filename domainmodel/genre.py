@@ -2,22 +2,18 @@
 class Genre:
     def __init__(self, genre_name: str):
         if genre_name == "" or type(genre_name) is not str:
-            self.__genre_name = None
+            self.name = None
         else:
-            self.__genre_name = genre_name.strip()
-
-    @property
-    def name(self) -> str:
-        return self.__genre_name
+            self.name = genre_name.strip()
 
     def __repr__(self):
-        return f"<Genre {self.__genre_name}>"
+        return f"<Genre {self.name}>"
 
     def __eq__(self, other: 'Genre') -> bool:
-        return self.__genre_name == other.__genre_name
+        return self.name == other.name
 
     def __lt__(self, other: 'Genre') -> bool:
-        return self.__genre_name < other.__genre_name
+        return self.name < other.name
 
     def __hash__(self):
-        return hash(self.__genre_name)
+        return hash(self.name)

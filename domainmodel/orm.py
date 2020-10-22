@@ -14,31 +14,32 @@ user = Table(
     'user', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('username', String(255), unique=True, nullable=False),
-    Column('password', String(255), unique=True, nullable=False),
+    Column('password', String(255), nullable=False),
 )
 
 actor = Table(
     'actor', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('full_name', String(255)),
+    Column('full_name', String(255), unique=True),
 )
 
 director = Table(
     'director', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('full_name', String(255)),
+    Column('full_name', String(255), unique=True),
 )
 
 genre = Table(
     'genre', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
-    Column('name', String(255)),
+    Column('name', String(255), unique=True),
 )
 
 movie = Table(
     'movie', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('title', String(255)),
+    Column('release_year', Integer),
     Column('description', String()),
     Column('runtime_minutes', Integer),
     Column('director_id', ForeignKey('director.id')),
@@ -80,6 +81,14 @@ def map_model():
         'director': relationship(Director),
         'genres': relationship(Genre, secondary=movie_genre),
         'actors': relationship(Actor, secondary=movie_actor),
+        '_release_year': movie.c.release_year,
+        '_title': movie.c.title,
+        '_description': movie.c.description,
+        '_runtime_minutes': movie.c.runtime_minutes,
+        '_rating': movie.c.rating,
+        '_votes': movie.c.votes,
+        '_revenue': movie.c.revenue,
+        '_metascore': movie.c.metascore,
     })
     #mapper(Review, review, properties={
     #    'movie': relationship(Movie),
