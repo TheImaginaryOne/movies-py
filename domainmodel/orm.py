@@ -14,7 +14,7 @@ user = Table(
     'user', metadata,
     Column('id', Integer, primary_key=True, autoincrement=True),
     Column('username', String(255), unique=True, nullable=False),
-    Column('password', String(255), nullable=False),
+    Column('password_hash', String(255), nullable=False),
 )
 
 actor = Table(

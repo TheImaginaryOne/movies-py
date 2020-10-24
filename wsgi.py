@@ -67,8 +67,8 @@ def create_app(repo=None, test_config=None):
     user.inject_current_user(app, repository)
 
     if app.debug:
-        (u, p) = ("user1234", "pass1234")
-        repository.add_user(u, p)
+#        (u, p) = ("user1234", "pass1234")
+#        repository.add_user(u, p)
 
         import logging
         logging.basicConfig()

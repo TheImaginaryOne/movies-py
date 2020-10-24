@@ -25,7 +25,7 @@
             <span class="movie-data-key">Actors</span>
             <span>
                 {% for actor in movie.actors %}
-                {{ actor.actor_full_name }}{{ ", " if not loop.last }}
+                {{ actor.full_name }}{{ ", " if not loop.last }}
                 {% endfor %}
             </span>
             <span class="movie-data-key">Revenue</span>
@@ -39,7 +39,7 @@
             <span class="movie-data-key">Genres</span>
             <span>
                 {% for genre in movie.genres %}
-                {{ genre.genre_name }}{{ ", " if not loop.last }}
+                {{ genre.name }}{{ ", " if not loop.last }}
                 {% endfor %}
             </span>
         </div>

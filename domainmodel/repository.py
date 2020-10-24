@@ -1,6 +1,7 @@
 from abc import abstractmethod
 
-from sqlalchemy.orm import Session, aliased
+from sqlalchemy.orm import Session, aliased, selectinload
+from sqlalchemy.orm.exc import NoResultFound
 
 from domainmodel.movie import Movie
 from domainmodel.director import Director
@@ -170,24 +171,51 @@ class DatabaseRepository(Repository):
 
         count = query.count()
         # paginate
+        query = query.options(selectinload(Movie.actors), selectinload(Movie.director))
         results = query.limit(number).offset(start).all()
 
         return results, start + number < count
 
     def add_user(self, username, password):
-        pass
-        # uu = User(username, password)
-        # session = Session()
-        # session.add(uu)
+        session = self.session_factory()
+        has_user = session.query(User)\
+            .filter(User.username == username)\
+            .count() > 0
+        if has_user:
+            return False
+
+        user = User(username, password)
+        session = self.session_factory()
+        session.add(user)
+        session.commit()
+        return True
 
     def get_user(self, index):
-        return None
+        session = self.session_factory()
+        try:
+            return session.query(User).filter(User.id == index).one()
+        except NoResultFound:
+            return None
 
     def get_movie(self, index):
-        return None
+        session = self.session_factory()
+        print(Movie.actors)
+        try:
+            # selectinload causes an eager load, ie. data is loaded
+            # as soon as possible
+            return session.query(Movie) \
+                .filter(Movie.id == index)\
+                .options(selectinload(Movie.actors),
+                         selectinload(Movie.genres),
+                         selectinload(Movie.director)
+                         )\
+                .one()
+        except NoResultFound:
+            return None
 
     def get_reviews(self, movie_index):
-        return None
+        session = self.session_factory()
+        return []
 
     def add_review(self, user_index, review):
         if user_index < len(self.users):
@@ -196,7 +224,16 @@ class DatabaseRepository(Repository):
         return False
 
     def has_user(self, user_id):
-        return False
+        session = self.session_factory()
+        return session.query(User).filter(User.id == user_id).count() > 0
 
     def login(self, username, password):
-        return None
+        session = self.session_factory()
+        try:
+            user = session.query(User).filter(User.username == username).one()
+
+            if user.verify_password(password):
+                return user.id  # return id of user
+            return None
+        except NoResultFound:
+            return None

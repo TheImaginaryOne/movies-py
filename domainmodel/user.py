@@ -11,28 +11,28 @@ class User:
         self.reviews: [Review] = []
         self.time_spent_watching_movies_minutes: int = 0
 
-    @property
-    def username(self):
-        return self._user_name
+   # @property
+   # def username(self):
+   #     return self.username
 
-    @username.setter
-    def username(self, u: str):
-        self._user_name = u.lower().strip()
+   # @username.setter
+   # def username(self, u: str):
+   #     self.username = u.lower().strip()
 
     def __repr__(self):
-        return f"<User {self._user_name}>"
+        return f"<User {self.username}>"
 
     def __eq__(self, other: 'User'):
-        return self._user_name == other._user_name
+        return self.username == other.username
     
     def verify_password(self, password):
         return hasher.verify(password, self.password_hash)
 
     def __lt__(self, other: 'User'):
-        return self._user_name < other._user_name
+        return self.username < other.username
 
     def __hash__(self):
-        return hash(self._user_name)
+        return hash(self.username)
 
     def watch_movie(self, movie: Movie):
         if movie not in self.watched_movies:

@@ -19,7 +19,7 @@
         </div>
         {% else %}
         <div class="top-menu-item">
-            Hello, {{ current_user.user_name }}
+            Hello, {{ current_user.username }}
         </div>
         <div class="top-menu-item">
             <a href="{{ url_for('user.logout') }}">Log out</a>
