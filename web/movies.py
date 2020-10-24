@@ -73,7 +73,8 @@ def movies_blueprint(repository: Repository):
         form.director.choices = [("", "--")] + [(x.full_name, x.full_name) for x in
                                                 repository.directors]
         form.actors.choices = [(x.full_name, x.full_name) for x in repository.actors]
-        form.genres.choices = [(x.name, x.name) for x in repository.genres]
+        genres = repository.genres
+        form.genres.choices = [(x.name, x.name) for x in genres]
 
         # print(director, actors, genres_split)
         try:

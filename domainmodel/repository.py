@@ -1,11 +1,12 @@
 from abc import abstractmethod
 
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, aliased
 
 from domainmodel.movie import Movie
 from domainmodel.director import Director
 from domainmodel.actor import Actor
 from domainmodel.genre import Genre
+from domainmodel.orm import movie_actor, movie_genre
 from domainmodel.review import Review
 from domainmodel.user import User
 
@@ -150,7 +151,28 @@ class DatabaseRepository(Repository):
         return self.session_factory().query(Genre).all()
 
     def view_movies(self, start, number, director=None, actors=None, genres=None):
-        return []
+        session = self.session_factory()
+        query = session.query(Movie)
+        if director is not None and director != "":
+            query = query.join(Director).filter(Director.full_name == director)
+
+        for actor_name in actors:
+            a = aliased(Actor)
+            m = aliased(movie_actor)
+            query = query.join(m, Movie.id == m.c.movie_id).join(a, m.c.actor_id == a.id)
+            query = query.filter(a.full_name == actor_name)
+
+        for genre_name in genres:
+            g = aliased(Genre)
+            mg = aliased(movie_genre)
+            query = query.join(mg, Movie.id == mg.c.movie_id).join(g, mg.c.genre_id == g.id)
+            query = query.filter(g.name == genre_name)
+
+        count = query.count()
+        # paginate
+        results = query.limit(number).offset(start).all()
+
+        return results, start + number < count
 
     def add_user(self, username, password):
         pass

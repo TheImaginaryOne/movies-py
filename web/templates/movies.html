@@ -44,12 +44,12 @@
             </div>
             <div>
                 <span class="movie-data-key">Director</span>
-                <span>{{ movie.director.director_full_name | e }}</span>
+                <span>{{ movie.director.full_name | e }}</span>
                 <span class="text-separator">|</span>
                 <span class="movie-data-key">Actors:</span>
                 <span>
                 {% for actor in movie.actors %}
-                {{ actor.actor_full_name | e + ", " }}
+                {{ actor.full_name | e + ", " }}
                 {% endfor %}
                 </span>
             </div>

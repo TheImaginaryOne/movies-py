@@ -73,7 +73,7 @@ def create_app(repo=None, test_config=None):
         import logging
         logging.basicConfig()
         logger = logging.getLogger('sqlalchemy.engine')
-        logger.setLevel(logging.DEBUG)
+        logger.setLevel(logging.INFO)
 
 
 # set up command
