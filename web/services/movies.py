@@ -17,8 +17,8 @@ def get_reviews(repository: Repository, movie_index):
 def add_review(repository: Repository, movie_index, review_text, rating):
     user_id = session['user']
 
-    movie = repository.get_movie(movie_index)
-    review = Review(movie, review_text, rating)  # TODO!!!
+    #movie = repository.get_movie(movie_index)
+    review = Review(movie_index, review_text, rating)  # TODO!!!
     repository.add_review(user_id, review)
     current_app.logger.info(f"Review (user_id {user_id})")
 

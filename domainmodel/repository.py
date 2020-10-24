@@ -104,7 +104,7 @@ class MemoryRepository(Repository):
         if movie_index < len(self.movies):
             reviews = []
             for user in self.users:
-                user_reviews = list(filter(lambda u: u.movie == self.movies[movie_index], user.reviews))
+                user_reviews = list(filter(lambda u: u.movie_id == movie_index, user.reviews))
                 if len(user_reviews) > 0:
                     reviews.append((user, user_reviews))
 
@@ -215,13 +215,35 @@ class DatabaseRepository(Repository):
 
     def get_reviews(self, movie_index):
         session = self.session_factory()
-        return []
+        reviews = session.query(Review)\
+                .join(Movie)\
+                .filter(Movie.id == movie_index)\
+                .order_by(Review.user_id)\
+                .all()
+        user_ids = [review.user_id for review in reviews]
+        # reviews probably may not be grouped by users.... *shrugs*
+        users = session.query(User)\
+                .filter(User.id.in_(user_ids))\
+                .order_by(User.id)\
+                .all()
+        #print(reviews)
+        #print(users)
 
-    def add_review(self, user_index, review):
-        if user_index < len(self.users):
-            self.users[user_index].add_review(review)
-            return True
-        return False
+        import itertools
+
+        z = zip(users, itertools.groupby(reviews, lambda x: x.user_id))
+        l = list(map(lambda pair: (pair[0], list(pair[1][1])), z))
+        return l
+
+    def add_review(self, user_id, review):
+        session = self.session_factory()
+        if not self.has_user(user_id):
+            return False
+
+        review.user_id = user_id
+        session.add(review)
+        session.commit()
+        return True
 
     def has_user(self, user_id):
         session = self.session_factory()

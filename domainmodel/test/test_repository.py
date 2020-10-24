@@ -95,10 +95,10 @@ def test_add_review():
     assert repo.add_user("bob", "pass123")
     assert repo.add_user("bobb", "pass12")
 
-    r1 = Review(m1, "Darth Plagueis was dumb, why couldn't he stop his apprentice??!!", 3)
-    r2 = Review(m2, "The Sith did nothing wrong, Jedis just spread fake news", 7)
-    r3 = Review(m2, "Star Wars is silly", 1)
-    r4 = Review(m2, "Oops the previous review was written by my cat, Star Wars is wonderful", 9)
+    r1 = Review(1, "Darth Plagueis was dumb, why couldn't he stop his apprentice??!!", 3)
+    r2 = Review(2, "The Sith did nothing wrong, Jedis just spread fake news", 7)
+    r3 = Review(2, "Star Wars is silly", 1)
+    r4 = Review(2, "Oops the previous review was written by my cat, Star Wars is wonderful", 9)
 
     # user_id, review
     repo.add_review(0, r1)
@@ -106,6 +106,6 @@ def test_add_review():
     repo.add_review(1, r3)
     repo.add_review(1, r4)
 
-    # review for the movie m1, id "1"
+    # review for the movie m1 of id "1"
     assert repo.get_reviews(1) == [(u1, [r1])]
     assert repo.get_reviews(2) == [(u1, [r2]), (u2, [r3, r4])]

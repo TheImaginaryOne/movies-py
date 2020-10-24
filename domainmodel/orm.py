@@ -90,7 +90,7 @@ def map_model():
         '_revenue': movie.c.revenue,
         '_metascore': movie.c.metascore,
     })
-    #mapper(Review, review, properties={
-    #    'movie': relationship(Movie),
-    #    'user': relationship(User),
-    #})
+    mapper(Review, review, properties={
+        'movie': relationship(Movie),
+        'user': relationship(User),
+    })
