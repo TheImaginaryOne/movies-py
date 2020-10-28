@@ -10,6 +10,7 @@ from datafilereaders.movie_file_csv_reader import MovieFileCSVReader
 from domainmodel.actor import Actor
 from domainmodel.orm import map_model, metadata
 from domainmodel.repository import MemoryRepository, DatabaseRepository
+from domainmodel.util import populate_database
 from web import movies, user, setup_app
 
 
@@ -82,17 +83,7 @@ def create_app(repo=None, test_config=None):
         app.logger.info("Repopulating database")
         # For testing, or first-time use of the web application, reinitialise the database.
         # clear_mappers()
-
-        metadata.drop_all(database_engine)
-        metadata.create_all(database_engine)  # Conditionally create database tables.
-        # populate data
-        file_reader = MovieFileCSVReader(filename)
-        file_reader.read_csv_file()
-
-        session = session_factory()
-        session.add_all(file_reader.dataset_of_movies)
-        print(f"{len(file_reader.dataset_of_movies)} movies")
-        session.commit()
+        populate_database(session_factory, database_engine, filename)
 
         app.logger.info("Inserted objects")
 
