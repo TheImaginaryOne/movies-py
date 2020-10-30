@@ -19,13 +19,13 @@ DATABASE_URI = 'sqlite:///epic.sqlite3'
 Create a new virtual environment to deploy:
 
 ```
-python -m venv venv
+python -m venv venv # must be python 3
 source venv/bin/activate
 pip install -r requirements.txt
 python -m pytest
 FLASK_ENV=development CONFIG=settings.cfg python -m flask run
 ```
-Note if `FLASK_DEBUG=1`, then the `SECRET_KEY` is TEST.
+Note if `FLASK_DEBUG=1` (or `FLASK_ENV=development` which does the some thing), then the `SECRET_KEY` is TEST.
 Also, run `CONFIG=settings.cfg python -m flask load-data` to reload the movies data (wiping all other
 data in the process).
 
