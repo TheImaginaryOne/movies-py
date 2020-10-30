@@ -178,13 +178,15 @@ class DatabaseRepository(Repository):
 
     def add_user(self, username, password):
         session = self.session_factory()
+        user = User(username, password)
+        # username is converted appropriately when inserted
+        # into User object.
         has_user = session.query(User)\
-            .filter(User.username == username)\
+            .filter(User.username == user.username)\
             .count() > 0
         if has_user:
             return False
 
-        user = User(username, password)
         session = self.session_factory()
         session.add(user)
         session.commit()

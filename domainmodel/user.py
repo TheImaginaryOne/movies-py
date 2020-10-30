@@ -5,7 +5,7 @@ from passlib.hash import pbkdf2_sha256 as hasher
 
 class User:
     def __init__(self, user_name, password):
-        self.username: str = user_name
+        self.username: str = user_name.lower()
         self.password_hash: str = hasher.hash(password)
         self.watched_movies: [Movie] = []
         self.reviews: [Review] = []
