@@ -1,6 +1,6 @@
 from flask import session
 
-from test.test_common import client_with_db_empty as client
+from test.test_common import client_with_db_data
 from web.user import ErrorMessages
 
 
@@ -8,7 +8,8 @@ def url(x):
     return f"http://localhost{x}"
 
 
-def test_register(client):
+def test_register():
+    client, _ = client_with_db_data()
     response = client.post('/register', data={'username': 'Oof_Aaa90_', 'password': 'foofoofoo'})
     assert response.headers['Location'] == url('/login')
 
@@ -18,7 +19,8 @@ def test_register(client):
     assert bytes(ErrorMessages.duplicate_username, 'utf') in response.data
 
 
-def test_register_invalid(client):
+def test_register_invalid():
+    client, _ = client_with_db_data()
     response = client.post('/register', data={'username': 'oof', 'password': 'foofoof'})
     assert response.status_code == 200
     assert bytes(ErrorMessages.invalid_password, 'utf') in response.data
@@ -33,7 +35,8 @@ def test_register_invalid(client):
 
 
 
-def test_login_invalid(client):
+def test_login_invalid():
+    client, _ = client_with_db_data()
     with client:
         response = client.post('/register', data={'username': 'oof', 'password': 'foofoofoo'})
         assert response.headers['Location'] == url('/login')
@@ -50,7 +53,8 @@ def test_login_invalid(client):
         assert 'user' not in session
 
 
-def test_login(client):
+def test_login():
+    client, _ = client_with_db_data()
     response = client.post('/register', data={'username': 'oof', 'password': 'foofoofoo'})
     assert response.headers['Location'] == url('/login')
 
@@ -64,7 +68,8 @@ def test_login(client):
         assert response.headers['Location'] == url('/movies')
 
 
-def test_logout(client):
+def test_logout():
+    client, _ = client_with_db_data()
     response = client.post('/register', data={'username': 'oof', 'password': 'foofoofoo'})
     assert response.headers['Location'] == url('/login')
 

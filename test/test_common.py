@@ -25,17 +25,6 @@ def client_with_data():
     return create_app(repository,
                       {'TESTING': True, 'WTF_CSRF_ENABLED': False, 'SECRET_KEY': 'test'}).test_client(), repository
 
-def client_with_db_empty():
-    clear_mappers()
-    database_engine = create_engine('sqlite:///')
-    map_model()
-    session_factory = sessionmaker(autocommit=False, autoflush=True, bind=database_engine)
-
-    repository = DatabaseRepository(session_factory)
-
-    return create_app(repository,
-                      {'TESTING': True, 'WTF_CSRF_ENABLED': False, 'SECRET_KEY': 'test'}).test_client(), repository
-
 def client_with_db_data():
     clear_mappers()
     filename = 'datafiles/Data100Movies.csv'
